@@ -4,6 +4,11 @@ A Django dashboard that lets factory managers, supervisors and operators track
 **production, quality, downtime and inventory** in near real time - and spot a
 problem before it becomes a lost shift.
 
+> **Live demo:** <https://virtual-charger-soviet-traditions.trycloudflare.com>
+> Sign in with `admin` / `factory123`.
+> This is a temporary Cloudflare Quick Tunnel (see §12.5) - the address changes
+> every time the demo is restarted, so it may be dead by the time you read this.
+
 The dashboard covers six pages (Overview, Production, Downtime, Quality,
 Inventory, Reports), a data-entry screen with bulk import, a token-authenticated
 ingestion API for machines/PLCs, and an alert engine that mails out when a KPI
@@ -24,7 +29,7 @@ layout and works on a shop-floor tablet.
 | `static/` | CSS, JS and the vendored Bootstrap / Chart.js / HTMX |
 | `locale/` | Arabic translation catalogue (`.po` + compiled `.mo`) |
 | `assets/fonts/` | DejaVuSans + Noto Naskh Arabic (for the PDF export) |
-| `tests/` | pytest suite (81 tests) |
+| `tests/` | pytest suite (91 tests) |
 | `deploy/` | gunicorn + nginx configuration |
 | `tools/i18n.py` | Portable `extract` / `compile` for the translation catalogue |
 
@@ -340,7 +345,7 @@ The seed script installs six realistic rules, e.g. *"Defect rate above 3%"*
   `text-align: start/end`, `border-inline-start`), so the layout mirrors
   itself without a second stylesheet.
 * Chart.js is told about the direction (`legend.rtl`, `tooltip.rtl`).
-* All **407** translatable strings are translated in
+* All **410** translatable strings are translated in
   `locale/ar/LC_MESSAGES/django.po`.
 
 GNU `gettext` is not always installed (notably on Windows), so the project
@@ -447,7 +452,8 @@ powershell -ExecutionPolicy Bypass -File tools/share_demo.ps1
 
 The script prints a public URL such as
 `https://virtual-charger-soviet-traditions.trycloudflare.com`. Anybody with
-that link can sign in with `admin` / `factory123`.
+that link can sign in with `admin` / `factory123`. The address is random and
+temporary - it changes on every run of the script.
 
 Stop it again with:
 
