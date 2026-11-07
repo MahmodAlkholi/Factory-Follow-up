@@ -232,7 +232,8 @@ LANGUAGES_BIDI = ["he", "ar", "fa", "ur"]
 # Static / media
 # --------------------------------------------------------------------------
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# Container platforms often mount the static folder somewhere else.
+STATIC_ROOT = env("DJANGO_STATIC_ROOT", BASE_DIR / "staticfiles")
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = "media/"

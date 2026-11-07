@@ -19,13 +19,22 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Static files are collected at build time; WhiteNoise serves them in the
-# container, nginx serves them in production.
-RUN python manage.py collectstatic --noinput || true
+# Static files are collected at build time AND again when the container starts
+# (deploy/entrypoint.sh), because some platforms mount an empty volume over
+# /app/staticfiles.  DJANGO_DEBUG=False is required so that Django uses the
+# hashed manifest storage - with DEBUG on there is no manifest and every
+# static file 404s.  No "|| true" here: a broken static build must fail the
+# image build instead of shipping a dashboard without CSS or Chart.js.
+RUN DJANGO_DEBUG=False python manage.py collectstatic --noinput
+
+# A Windows checkout has no executable bit, so the script would arrive
+# without one and the container would refuse to start.
+RUN chmod +x /app/deploy/entrypoint.sh
 
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
     CMD curl -fsS http://127.0.0.1:8000/api/v1/health/ || exit 1
 
+ENTRYPOINT ["/app/deploy/entrypoint.sh"]
 CMD ["gunicorn", "factory_dashboard.wsgi:application", "-c", "deploy/gunicorn.conf.py"]

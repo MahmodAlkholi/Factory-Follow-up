@@ -6,7 +6,9 @@
 import multiprocessing
 import os
 
-bind = os.environ.get("GUNICORN_BIND", "0.0.0.0:8000")
+# Cloud Run, Render, Heroku, HF Spaces and friends tell the process which port
+# to listen on through $PORT; fall back to 8000 for a plain local run.
+bind = os.environ.get("GUNICORN_BIND") or "0.0.0.0:%s" % os.environ.get("PORT", "8000")
 
 # 2 workers + 1 per extra core, but never more than 8: the dashboard is
 # I/O bound (Postgres + Redis), not CPU bound.

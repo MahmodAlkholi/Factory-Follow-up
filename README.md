@@ -6,7 +6,7 @@ problem before it becomes a lost shift.
 
 > **Live demo:** <https://virtual-charger-soviet-traditions.trycloudflare.com>
 > Sign in with `admin` / `factory123`.
-> This is a temporary Cloudflare Quick Tunnel (see §12.5) - the address changes
+> This is a temporary Cloudflare Quick Tunnel (see §12.6) - the address changes
 > every time the demo is restarted, so it may be dead by the time you read this.
 
 The dashboard covers six pages (Overview, Production, Downtime, Quality,
@@ -29,9 +29,12 @@ layout and works on a shop-floor tablet.
 | `static/` | CSS, JS and the vendored Bootstrap / Chart.js / HTMX |
 | `locale/` | Arabic translation catalogue (`.po` + compiled `.mo`) |
 | `assets/fonts/` | DejaVuSans + Noto Naskh Arabic (for the PDF export) |
-| `tests/` | pytest suite (91 tests) |
+| `tests/` | pytest suite (96 tests) |
 | `deploy/` | gunicorn + nginx configuration |
 | `tools/i18n.py` | Portable `extract` / `compile` for the translation catalogue |
+| `tools/share_demo.ps1` | Start/stop a public Cloudflare Quick Tunnel for the running demo |
+| `tools/check_share.py` | Verify that a shared URL serves the dashboard (login included) |
+| `tools/vendor_clean.py` | Strip the broken `sourceMappingURL` references from the vendored assets |
 
 ---
 
@@ -362,7 +365,7 @@ python tools/i18n.py stats       # what is still untranslated
 ## 11. Tests
 
 ```bash
-python -m pytest              # 91 tests
+python -m pytest              # 96 tests
 python -m pytest tests/test_api.py -v
 ```
 
@@ -420,9 +423,13 @@ important ones:
 | `DJANGO_SECRET_KEY` | dev key | **change in production** |
 | `DJANGO_DEBUG` | `True` | set to `False` in production |
 | `DJANGO_ALLOWED_HOSTS` | localhost | comma separated hostnames |
+| `DJANGO_CSRF_TRUSTED_ORIGINS` | empty | comma separated origins, needed for POSTs over HTTPS |
+| `DJANGO_STATIC_ROOT` | `<project>/staticfiles` | where `collectstatic` puts the files |
+| `PORT` | `8000` | set by Cloud Run / Render / Heroku / Spaces; gunicorn binds to it |
 | `POSTGRES_*` | unset | when `POSTGRES_DB` + `POSTGRES_HOST` are set, Postgres is used |
 | `REDIS_URL` | redis://127.0.0.1:6379/0 | cache + Celery broker |
 | `CELERY_BROKER_URL` / `CELERY_RESULT_BACKEND` | derived from `REDIS_URL` | |
+| `CELERY_TASK_ALWAYS_EAGER` | `False` | `True` runs the Celery tasks in-process (no broker needed) |
 | `EMAIL_*` | console backend | SMTP for the alert mails |
 | `ALERTS_RECIPIENTS` | empty | comma separated, always notified |
 | `PLANNED_SHIFT_MINUTES` | `480` | planned time per shift, used for OEE availability |
@@ -439,7 +446,40 @@ celery -A factory_dashboard beat   -l info
 `beat` runs the threshold evaluation every minute and refreshes the duration of
 ongoing downtime events every five minutes.
 
-### 12.5 Share the running demo on the internet (free)
+### 12.5 Container platforms (Cloud Run, Render, Heroku, Spaces)
+
+The image is a plain container, so it also runs on the PaaS platforms:
+
+```bash
+gcloud run deploy factory-dashboard \
+    --source . --region europe-west1 --allow-unauthenticated \
+    --set-env-vars DJANGO_DEBUG=False,DJANGO_SECRET_KEY=...,DJANGO_ALLOWED_HOSTS=...
+```
+
+Three things to know:
+
+1. **The container listens on `$PORT`.** `deploy/gunicorn.conf.py` binds to it,
+   so Cloud Run, Render, Heroku and Spaces work without extra configuration.
+2. **The filesystem is ephemeral.** A SQLite file would be wiped with every new
+   instance, so use a managed Postgres (Cloud SQL, Neon, Supabase) and set
+   `POSTGRES_*`. Do **not** copy `POSTGRES_HOST=db` from `.env.example` - that
+   is the name of the compose service, not a real server.
+3. **Static files are collected when the container starts**
+   (`deploy/entrypoint.sh` runs `migrate` + `collectstatic`), because a
+   platform may mount an empty volume over `/app/staticfiles`.
+
+**Alerts without a Celery beat.** A container service cannot keep a beat
+process alive next to it. Run the evaluation as a scheduled job instead:
+
+```bash
+python manage.py evaluate_thresholds
+```
+
+Schedule that every minute (Cloud Scheduler → Cloud Run Job, or a cron entry).
+With `CELERY_TASK_ALWAYS_EAGER=True` the Celery tasks themselves also run
+in-process, so no broker is needed at all.
+
+### 12.6 Share the running demo on the internet (free)
 
 To let somebody see the dashboard without installing anything, put it behind a
 **Cloudflare Quick Tunnel**. It needs no account, no domain and no credit card,
@@ -525,12 +565,14 @@ task is a five-line wrapper.
 ```bash
 python manage.py seed_demo_data --days 60 --reset   # fresh demo data
 python manage.py create_api_token --username operator --name "PLC"
+python manage.py evaluate_thresholds                 # run the alert engine once
 python tools/i18n.py extract && python tools/i18n.py compile
+python tools/vendor_clean.py                        # check the vendored assets
 python -m pytest
 python manage.py runserver
 ```
 
-Share it with somebody (see §12.5):
+Share it with somebody (see §12.6):
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tools/share_demo.ps1        # start
