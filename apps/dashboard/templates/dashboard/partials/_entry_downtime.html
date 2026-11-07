@@ -1,0 +1,42 @@
+{% load i18n %}
+<form hx-post="{% url 'dashboard:entry-downtime' %}"
+      hx-target="#entry-downtime-result"
+      hx-swap="innerHTML"
+      class="row g-2">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div class="col-12 col-md-3">
+    <label class="form-label small" for="d_machine">{% trans "Machine" %}</label>
+    {{ form.machine }}
+    {{ form.machine.errors }}
+  </div>
+  <div class="col-6 col-md-3">
+    <label class="form-label small" for="d_start">{% trans "Start" %}</label>
+    {{ form.started_at }}
+    {{ form.started_at.errors }}
+  </div>
+  <div class="col-6 col-md-3">
+    <label class="form-label small" for="d_end">{% trans "End" %}</label>
+    {{ form.ended_at }}
+    {{ form.ended_at.errors }}
+  </div>
+  <div class="col-6 col-md-3">
+    <label class="form-label small" for="d_reason">{% trans "Reason category" %}</label>
+    {{ form.reason_category }}
+    {{ form.reason_category.errors }}
+  </div>
+  <div class="col-6 col-md-3">
+    <label class="form-label small" for="d_code">{% trans "Reason code" %}</label>
+    {{ form.reason_code }}
+  </div>
+  <div class="col-12 col-md-8">
+    <label class="form-label small" for="d_note">{% trans "Detail" %}</label>
+    {{ form.reason_note }}
+  </div>
+  <div class="col-12 col-md-4 d-grid align-self-end">
+    <button type="submit" class="btn btn-primary">{% trans "Save downtime" %}</button>
+  </div>
+</form>
+{% if message %}
+  <div class="alert alert-success mt-3 mb-0 py-2">{{ message }}</div>
+{% endif %}

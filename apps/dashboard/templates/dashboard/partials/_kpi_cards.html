@@ -1,0 +1,18 @@
+{% load i18n dashboard_extras %}
+<div class="row g-3 mb-3" id="kpi-cards"
+     hx-get="{% url 'dashboard:overview-kpis' %}{% if filter_query %}?{{ filter_query }}{% endif %}"
+     hx-trigger="every {{ refresh_seconds }}s"
+     hx-swap="outerHTML">
+  {% for card in kpi_cards %}
+    <div class="col-6 col-lg">
+      <div class="kpi-card kpi-{{ card.tone }}">
+        <div class="kpi-label">{{ card.label }}</div>
+        <div class="kpi-value">
+          {{ card.value }}
+          {% if card.unit %}<span class="kpi-unit">{{ card.unit }}</span>{% endif %}
+        </div>
+        <div class="kpi-sub">{{ card.sub }}</div>
+      </div>
+    </div>
+  {% endfor %}
+</div>

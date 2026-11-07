@@ -1,0 +1,243 @@
+/* ==========================================================================
+   Factory Follow-up Dashboard - application styles
+   Layout is written with logical properties so the RTL build mirrors itself.
+   ========================================================================== */
+
+:root {
+  --fd-sidebar-bg: #0f2942;
+  --fd-sidebar-bg-soft: #16385a;
+  --fd-sidebar-text: #c8d6e5;
+  --fd-accent: #1f77b4;
+  --fd-bg: #f4f6f9;
+  --fd-border: #e2e8f0;
+  --fd-success: #198754;
+  --fd-warning: #e08b1a;
+  --fd-danger: #c0392b;
+  --fd-info: #2b7a9b;
+  --fd-sidebar-width: 248px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body.app-body {
+  margin: 0;
+  background: var(--fd-bg);
+  font-family: "Segoe UI", system-ui, -apple-system, "Noto Naskh Arabic", Tahoma, Arial, sans-serif;
+  font-size: 14px;
+  color: #1f2933;
+}
+
+/* ------------------------------------------------------------------ shell */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-sidebar {
+  width: var(--fd-sidebar-width);
+  flex: 0 0 var(--fd-sidebar-width);
+  background: var(--fd-sidebar-bg);
+  color: var(--fd-sidebar-text);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2d9cdb, #1f77b4);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  letter-spacing: .5px;
+  flex: 0 0 auto;
+}
+
+.brand-text { font-weight: 600; color: #fff; font-size: .95rem; }
+
+.sidebar-nav { padding: .75rem .6rem; display: flex; flex-direction: column; gap: .15rem; flex: 1 1 auto; }
+
+.sidebar-nav .nav-link {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  padding: .55rem .75rem;
+  border-radius: 8px;
+  color: var(--fd-sidebar-text);
+  text-decoration: none;
+  font-size: .9rem;
+  transition: background .15s ease, color .15s ease;
+}
+
+.sidebar-nav .nav-link:hover { background: var(--fd-sidebar-bg-soft); color: #fff; }
+.sidebar-nav .nav-link.active { background: var(--fd-accent); color: #fff; font-weight: 600; }
+
+.sidebar-footer { padding: .75rem 1rem 1rem; border-top: 1px solid rgba(255, 255, 255, .08); }
+.sidebar-footer .form-select { background-color: var(--fd-sidebar-bg-soft); color: #fff; border-color: rgba(255,255,255,.15); }
+.sidebar-footer .form-select option { color: #111; }
+
+.icon { width: 18px; height: 18px; fill: currentColor; flex: 0 0 auto; }
+
+/* ------------------------------------------------------------------- main */
+.app-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+
+.app-topbar {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .65rem 1rem;
+  background: #fff;
+  border-bottom: 1px solid var(--fd-border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.topbar-title { flex: 1 1 auto; min-width: 0; }
+.topbar-actions { display: flex; align-items: center; gap: .5rem; }
+
+.user-chip { display: flex; align-items: center; gap: .5rem; padding-inline-end: .25rem; }
+.user-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--fd-accent); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: .85rem;
+}
+.role-chip {
+  display: inline-block; background: #eef2f7; color: #475569;
+  border-radius: 999px; padding: 0 .45rem; font-size: .68rem; margin-inline-end: .2rem;
+}
+
+.alert-dot {
+  position: absolute; top: -6px; inset-inline-end: -6px;
+  background: var(--fd-danger); color: #fff; border-radius: 999px;
+  font-size: .65rem; padding: .1rem .35rem; font-weight: 700;
+}
+
+.app-content { padding: 1rem 1rem 2rem; }
+
+/* -------------------------------------------------------------- KPI cards */
+.kpi-card {
+  background: #fff;
+  border: 1px solid var(--fd-border);
+  border-radius: 12px;
+  padding: .85rem .95rem;
+  height: 100%;
+  box-shadow: 0 1px 2px rgba(15, 41, 66, .04);
+  border-inline-start: 4px solid var(--fd-accent);
+}
+
+.kpi-primary { border-inline-start-color: var(--fd-accent); }
+.kpi-success { border-inline-start-color: var(--fd-success); }
+.kpi-warning { border-inline-start-color: var(--fd-warning); }
+.kpi-danger  { border-inline-start-color: var(--fd-danger); }
+.kpi-info    { border-inline-start-color: var(--fd-info); }
+
+.kpi-label { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; color: #64748b; font-weight: 600; }
+.kpi-value { font-size: 1.65rem; font-weight: 700; line-height: 1.2; margin-top: .15rem; }
+.kpi-unit { font-size: .85rem; font-weight: 500; color: #64748b; margin-inline-start: .2rem; }
+.kpi-sub { font-size: .76rem; color: #7b8794; margin-top: .2rem; }
+
+/* ------------------------------------------------------------------ cards */
+.card { border-color: var(--fd-border); box-shadow: 0 1px 2px rgba(15, 41, 66, .04); }
+.card-header { background: #fff; font-weight: 600; border-bottom-color: var(--fd-border); }
+.table > :not(caption) > * > * { padding: .5rem .6rem; }
+.table thead th { font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: #64748b; font-weight: 600; background: #f8fafc; }
+
+/* ----------------------------------------------------------------- badges */
+.badge-critical { background: #fdecea; color: #922b21; border: 1px solid #f5c6c2; }
+.badge-warning  { background: #fff4e5; color: #8a5300; border: 1px solid #ffd8a8; }
+.badge-info     { background: #e8f4f8; color: #1b6b8a; border: 1px solid #b9ddea; }
+.badge-success  { background: #e7f6ec; color: #146c43; border: 1px solid #b7e4c8; }
+
+/* ------------------------------------------------------------------ chart */
+/* The container MUST have a fixed height: Chart.js runs with
+   maintainAspectRatio:false and would otherwise grow the canvas forever. */
+.chart-wrap { position: relative; height: 280px; }
+.chart-wrap.chart-wrap-sm { height: 220px; }
+.chart-wrap.chart-wrap-lg { height: 340px; }
+.chart-wrap canvas {
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ---------------------------------------------------------------- timeline */
+.timeline { display: flex; flex-direction: column; gap: .45rem; }
+.timeline-row { display: flex; align-items: center; gap: .6rem; }
+.timeline-label {
+  flex: 0 0 150px; font-size: .78rem; font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.timeline-track {
+  position: relative; flex: 1 1 auto; height: 20px;
+  background: #eef2f7; border-radius: 6px; overflow: hidden;
+}
+.timeline-bar {
+  position: absolute; top: 0; bottom: 0;
+  background: var(--fd-danger); border-radius: 4px; min-width: 3px; opacity: .85;
+}
+.timeline-total { flex: 0 0 76px; font-size: .75rem; text-align: end; color: #64748b; }
+
+/* ------------------------------------------------------------------ login */
+.login-body {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 1rem;
+  background: linear-gradient(135deg, #0f2942 0%, #1f4e79 60%, #1f77b4 100%);
+}
+.login-card {
+  background: #fff; border-radius: 16px; padding: 2rem;
+  width: 100%; max-width: 420px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .25);
+}
+.login-brand { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.5rem; }
+
+/* --------------------------------------------------------------- flash/box */
+.flash-stack { margin-bottom: .75rem; }
+
+/* --------------------------------------------------------------- responsive */
+@media (max-width: 991.98px) {
+  .app-sidebar {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 40;
+    transform: translateX(-100%);
+    transition: transform .2s ease;
+  }
+  [dir="rtl"] .app-sidebar { transform: translateX(100%); }
+  .app-sidebar.show { transform: translateX(0); }
+  .app-content { padding: .75rem; }
+  .kpi-value { font-size: 1.4rem; }
+}
+
+@media (max-width: 575.98px) {
+  .timeline-label { flex: 0 0 90px; }
+  .kpi-value { font-size: 1.25rem; }
+}
+
+/* ------------------------------------------------------------- print (PDF) */
+@media print {
+  .app-sidebar, .app-topbar, .filter-bar, .topbar-actions { display: none !important; }
+  .app-content { padding: 0; }
+  .card { break-inside: avoid; box-shadow: none; }
+}

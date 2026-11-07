@@ -1,0 +1,55 @@
+{% load i18n dashboard_extras %}
+<form method="get" class="card filter-bar mb-3">
+  <div class="card-body py-2">
+    <div class="row g-2 align-items-end">
+      <div class="col-6 col-md-2">
+        <label class="form-label small mb-0" for="id_date_from">{% trans "From" %}</label>
+        <input type="date" name="date_from" id="id_date_from" class="form-control form-control-sm"
+               value="{{ filter_params.date_from|default:'' }}">
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label small mb-0" for="id_date_to">{% trans "To" %}</label>
+        <input type="date" name="date_to" id="id_date_to" class="form-control form-control-sm"
+               value="{{ filter_params.date_to|default:'' }}">
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label small mb-0" for="id_factory">{% trans "Factory" %}</label>
+        <select name="factory" id="id_factory" class="form-select form-select-sm">
+          {% for value, label in filter_form.fields.factory.choices %}
+            <option value="{{ value }}" {% if filter_params.factory == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label small mb-0" for="id_line">{% trans "Line" %}</label>
+        <select name="line" id="id_line" class="form-select form-select-sm">
+          {% for value, label in filter_form.fields.line.choices %}
+            <option value="{{ value }}" {% if filter_params.line == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label small mb-0" for="id_shift">{% trans "Shift" %}</label>
+        <select name="shift" id="id_shift" class="form-select form-select-sm">
+          {% for value, label in filter_form.fields.shift.choices %}
+            <option value="{{ value }}" {% if filter_params.shift == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% if filter_form.fields.product %}
+      <div class="col-6 col-md-2">
+        <label class="form-label small mb-0" for="id_product">{% trans "Product" %}</label>
+        <select name="product" id="id_product" class="form-select form-select-sm">
+          {% for value, label in filter_form.fields.product.choices %}
+            <option value="{{ value }}" {% if filter_params.product == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+      <div class="col-6 col-md-2 d-flex gap-2">
+        <button type="submit" class="btn btn-sm btn-primary flex-grow-1">{% trans "Apply" %}</button>
+        <a href="{{ request.path }}" class="btn btn-sm btn-outline-secondary" title="{% trans 'Reset' %}">↺</a>
+      </div>
+    </div>
+  </div>
+</form>

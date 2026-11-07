@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Data entry" %} · {{ APP_NAME }}{% endblock %}
+{% block page_title %}{% trans "Data entry" %}{% endblock %}
+{% block page_subtitle %}
+  <small class="text-muted">{% trans "Everything you type here is visible on the dashboards immediately." %}</small>
+{% endblock %}
+
+{% block content %}
+  <ul class="nav nav-tabs mb-3" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-production" type="button">
+        {% trans "Production" %}
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-downtime" type="button">
+        {% trans "Downtime" %}
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-quality" type="button">
+        {% trans "Quality" %}
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-stock" type="button">
+        {% trans "Stock" %}
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="tab-production" role="tabpanel">
+      <div class="card">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Production record" %}</h2></div>
+        <div class="card-body">
+          <div id="entry-production-result">
+            {% include "dashboard/partials/_entry_production.html" with form=production_form %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-downtime" role="tabpanel">
+      <div class="card">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Downtime event" %}</h2></div>
+        <div class="card-body">
+          <div id="entry-downtime-result">
+            {% include "dashboard/partials/_entry_downtime.html" with form=downtime_form %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-quality" role="tabpanel">
+      <div class="card">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Quality check" %}</h2></div>
+        <div class="card-body">
+          <div id="entry-quality-result">
+            {% include "dashboard/partials/_entry_quality.html" with form=quality_form %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-stock" role="tabpanel">
+      <div class="card">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Stock movement" %}</h2></div>
+        <div class="card-body">
+          <div id="entry-stock-result">
+            {% include "dashboard/partials/_entry_stock.html" with form=stock_form %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <span>{% trans "Got a spreadsheet from the shop floor? Import it in one go." %}</span>
+      <a class="btn btn-outline-primary btn-sm" href="{% url 'dashboard:import' %}">{% trans "Open bulk import" %}</a>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  {{ lines_json|json_script:"lines-data" }}
+  <script>
+    // Only offer the machines that belong to the selected line.
+    document.addEventListener("change", function (event) {
+      var lineSelect = event.target.closest("#tab-production select[name=production_line]");
+      if (!lineSelect) return;
+      var machineSelect = document.querySelector("#tab-production select[name=machine]");
+      if (!machineSelect) return;
+
+      var payload = document.getElementById("lines-data");
+      var lines = payload ? JSON.parse(payload.textContent) : [];
+      var line = null;
+      for (var i = 0; i < lines.length; i++) {
+        if (String(lines[i].id) === String(lineSelect.value)) { line = lines[i]; break; }
+      }
+      var allowed = {};
+      (line ? line.machines : []).forEach(function (m) { allowed[String(m.id)] = true; });
+
+      Array.prototype.forEach.call(machineSelect.options, function (option) {
+        if (!option.value) return;
+        var hide = Object.keys(allowed).length > 0 && !allowed[option.value];
+        option.hidden = hide;
+        option.disabled = hide;
+      });
+    });
+  </script>
+{% endblock %}

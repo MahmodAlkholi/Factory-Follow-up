@@ -1,0 +1,27 @@
+# ---- Web framework ----
+Django==5.1.4
+djangorestframework==3.15.2
+djangorestframework-simplejwt==5.5.1
+django-filter==24.3
+django-cors-headers==4.6.0
+whitenoise==6.10.0
+gunicorn==23.0.0
+
+# ---- Background jobs ----
+celery==5.7.0
+redis==8.1.0
+
+# ---- Database ----
+psycopg2-binary==2.9.10
+
+# ---- Export / documents ----
+openpyxl==3.1.5
+reportlab==5.0.0
+arabic-reshaper==3.0.1
+python-bidi==0.6.10
+
+# ---- Tooling ----
+python-dotenv==1.0.1
+polib==1.2.0
+pytest==8.4.2
+pytest-django==4.14.0

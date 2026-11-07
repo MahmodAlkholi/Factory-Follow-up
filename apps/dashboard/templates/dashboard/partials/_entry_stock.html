@@ -1,0 +1,42 @@
+{% load i18n %}
+<form hx-post="{% url 'dashboard:entry-stock' %}"
+      hx-target="#entry-stock-result"
+      hx-swap="innerHTML"
+      class="row g-2">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div class="col-12 col-md-4">
+    <label class="form-label small" for="s_item">{% trans "Item" %}</label>
+    {{ form.inventory_item }}
+    {{ form.inventory_item.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="s_type">{% trans "Movement type" %}</label>
+    {{ form.movement_type }}
+    {{ form.movement_type.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="s_qty">{% trans "Quantity" %}</label>
+    {{ form.quantity }}
+    {{ form.quantity.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="s_ref">{% trans "Reference" %}</label>
+    {{ form.reference_no }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="s_date">{% trans "Date" %}</label>
+    {{ form.moved_at }}
+    {{ form.moved_at.errors }}
+  </div>
+  <div class="col-12 col-md-6">
+    <label class="form-label small" for="s_reason">{% trans "Reason" %}</label>
+    {{ form.reason }}
+  </div>
+  <div class="col-12 col-md-2 d-grid align-self-end">
+    <button type="submit" class="btn btn-primary">{% trans "Save movement" %}</button>
+  </div>
+</form>
+{% if message %}
+  <div class="alert alert-success mt-3 mb-0 py-2">{{ message }}</div>
+{% endif %}

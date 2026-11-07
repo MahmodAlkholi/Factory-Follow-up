@@ -1,0 +1,36 @@
+{% comment %}Small inline SVG icon set (no external icon font needed).{% endcomment %}
+{% if name == "grid" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>
+{% elif name == "chart" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18v-2H5V3H3zm4 12l3.5-4.5 3 3L20 6l1.5 1.5-7 7.5-3-3L8.5 17 7 15.5z"/></svg>
+{% elif name == "pause" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+{% elif name == "shield" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3zm-1 13l5-5-1.4-1.4L11 12.2 9.4 10.6 8 12l3 3z"/></svg>
+{% elif name == "box" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l9 4.5v11L12 22l-9-4.5v-11L12 2zm0 2.3L6.2 7 12 9.7 17.8 7 12 4.3zM5 8.8v7.4l6 3v-7.4l-6-3zm8 10.4l6-3V8.8l-6 3v7.4z"/></svg>
+{% elif name == "file" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm0 2.5L18.5 9H14V4.5zM8 13h8v2H8v-2zm0 4h8v2H8v-2zm0-8h4v2H8V9z"/></svg>
+{% elif name == "edit" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17.2V21h3.8L17.9 9.9l-3.8-3.8L3 17.2zM20.7 7.1a1 1 0 000-1.4l-2.4-2.4a1 1 0 00-1.4 0l-1.8 1.8 3.8 3.8 1.8-1.8z"/></svg>
+{% elif name == "upload" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l5 5h-3v6h-4V8H7l5-5zM5 18h14v2H5v-2z"/></svg>
+{% elif name == "download" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16l-5-5h3V5h4v6h3l-5 5zM5 18h14v2H5v-2z"/></svg>
+{% elif name == "bell" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a2.5 2.5 0 002.5-2.5h-5A2.5 2.5 0 0012 22zm7-6v-5a7 7 0 00-5.5-6.8V3.5a1.5 1.5 0 00-3 0v.7A7 7 0 005 11v5l-2 2v1h18v-1l-2-2z"/></svg>
+{% elif name == "sliders" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM9 13v-2H3v2h6zm12 6V11h-2v2h-4v2h4v2h2zm-6-8h2V7h4V5h-4V3h-2v8z"/></svg>
+{% elif name == "settings" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.4 13a7.8 7.8 0 000-2l2.1-1.6-2-3.5-2.5 1a7.7 7.7 0 00-1.7-1l-.4-2.6h-4l-.4 2.6c-.6.2-1.2.6-1.7 1l-2.5-1-2 3.5L4.6 11a7.8 7.8 0 000 2l-2.1 1.6 2 3.5 2.5-1c.5.4 1.1.8 1.7 1l.4 2.6h4l.4-2.6c.6-.2 1.2-.6 1.7-1l2.5 1 2-3.5L19.4 13zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
+{% elif name == "logout" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3H5a2 2 0 00-2 2v14a2 2 0 002 2h5v-2H5V5h5V3zm6.2 3.6l-1.4 1.4L17.2 10H9v2h8.2l-2.4 2 1.4 1.4L21 11l-4.8-4.4z"/></svg>
+{% elif name == "refresh" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.6 6.4A8 8 0 105.3 16h2.1a6 6 0 11.9-7.7L11 11h8V3l-1.4 3.4z"/></svg>
+{% elif name == "plus" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z"/></svg>
+{% elif name == "trash" %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zM6 9h12l-1 12H7L6 9z"/></svg>
+{% else %}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>
+{% endif %}

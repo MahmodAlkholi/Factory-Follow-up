@@ -1,0 +1,25 @@
+# Normalise line endings.
+#
+# The repository always stores LF - the Docker image, nginx and the Celery
+# commands all run on Linux, and a CRLF in a config file breaks nginx.
+# Windows still checks the files out with CRLF where it matters.
+* text=auto eol=lf
+
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.mo binary
+*.pdf binary
+*.xlsx binary
+*.sqlite3 binary

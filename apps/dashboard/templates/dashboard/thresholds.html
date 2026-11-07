@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load i18n dashboard_extras %}
+
+{% block title %}{% trans "Thresholds" %} · {{ APP_NAME }}{% endblock %}
+{% block page_title %}{% trans "Alert thresholds" %}{% endblock %}
+{% block page_subtitle %}
+  <small class="text-muted">{% trans "When a KPI crosses one of these limits, an alert is raised and emailed." %}</small>
+{% endblock %}
+
+{% block content %}
+  <div class="row g-3">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Active rules" %}</h2></div>
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th>{% trans "Rule" %}</th>
+                <th>{% trans "Scope" %}</th>
+                <th>{% trans "Metric" %}</th>
+                <th>{% trans "Condition" %}</th>
+                <th>{% trans "Severity" %}</th>
+                <th>{% trans "Active" %}</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for threshold in thresholds %}
+                <tr class="{% if not threshold.is_active %}opacity-50{% endif %}">
+                  <td>
+                    <strong>{{ threshold.name }}</strong>
+                    {% if threshold.description %}<br><small class="text-muted">{{ threshold.description }}</small>{% endif %}
+                  </td>
+                  <td class="small">{{ threshold.scope_label }}</td>
+                  <td class="small">{{ threshold.get_metric_display }}</td>
+                  <td class="small"><code>{{ threshold.get_operator_display }} {{ threshold.value }}</code></td>
+                  <td><span class="badge {{ threshold.severity|severity_class }}">{{ threshold.get_severity_display }}</span></td>
+                  <td>
+                    {% if threshold.is_active %}
+                      <span class="badge bg-success">{% trans "Yes" %}</span>
+                    {% else %}
+                      <span class="badge bg-secondary">{% trans "No" %}</span>
+                    {% endif %}
+                  </td>
+                  <td class="text-end">
+                    <form method="post" action="{% url 'dashboard:threshold-delete' threshold.pk %}" class="d-inline">
+                      {% csrf_token %}
+                      <button class="btn btn-sm btn-outline-danger" type="submit"
+                              onclick="return confirm('{% blocktrans %}Delete this rule?{% endblocktrans %}')">✕</button>
+                    </form>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr><td colspan="7" class="text-center text-muted py-4">{% trans "No thresholds defined yet." %}</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "New threshold" %}</h2></div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+              <div class="mb-2">
+                <label class="form-label small mb-0" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}<div class="text-danger small">{{ field.errors|striptags }}</div>{% endif %}
+              </div>
+            {% endfor %}
+            <button class="btn btn-primary btn-sm mt-2" type="submit">{% trans "Create threshold" %}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

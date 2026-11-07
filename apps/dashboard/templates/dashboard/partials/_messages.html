@@ -1,0 +1,11 @@
+{% load i18n %}
+{% if messages %}
+  <div class="flash-stack">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show shadow-sm" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{% trans 'Close' %}"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

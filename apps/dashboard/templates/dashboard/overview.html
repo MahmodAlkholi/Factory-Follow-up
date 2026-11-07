@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% load i18n dashboard_extras %}
+
+{% block title %}{% trans "Overview" %} · {{ APP_NAME }}{% endblock %}
+{% block page_title %}{% trans "Overview" %}{% endblock %}
+{% block page_subtitle %}
+  <small class="text-muted">
+    {% blocktrans with from_date=filters.date_from to_date=filters.date_to %}{{ from_date }} → {{ to_date }}{% endblocktrans %}
+  </small>
+{% endblock %}
+
+{% block content %}
+  {% include "dashboard/partials/_filter_bar.html" %}
+
+  {# ---------------- KPI cards (auto refreshed by HTMX) ---------------- #}
+  {% include "dashboard/partials/_kpi_cards.html" %}
+
+  <div class="row g-3 mb-3">
+    <div class="col-lg-8">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2 class="h6 mb-0">{% trans "Output vs target" %}</h2>
+          <span class="badge bg-light text-dark border">
+            {% blocktrans with produced=production.produced target=production.target %}{{ produced }} / {{ target }} pcs{% endblocktrans %}
+          </span>
+        </div>
+        <div class="card-body chart-wrap">
+          <canvas id="dailyChart" height="110"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "OEE breakdown" %}</h2></div>
+        <div class="card-body">
+          <div class="chart-wrap chart-wrap-sm">
+            <canvas id="oeeChart"></canvas>
+          </div>
+          <ul class="list-unstyled mt-3 mb-0 small">
+            <li class="d-flex justify-content-between"><span>{% trans "Availability" %}</span><strong>{{ oee.availability }}%</strong></li>
+            <li class="d-flex justify-content-between"><span>{% trans "Performance" %}</span><strong>{{ oee.performance }}%</strong></li>
+            <li class="d-flex justify-content-between"><span>{% trans "Quality" %}</span><strong>{{ oee.quality }}%</strong></li>
+            <li class="d-flex justify-content-between border-top pt-1 mt-1"><span>{% trans "OEE" %}</span><strong class="text-primary">{{ oee.oee }}%</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Output by line" %}</h2></div>
+        <div class="card-body chart-wrap">
+          <canvas id="byLineChart" height="120"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Downtime - top reasons" %}</h2></div>
+        <div class="card-body chart-wrap">
+          <canvas id="paretoChart" height="120"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-7">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2 class="h6 mb-0">{% trans "Active alerts" %}</h2>
+          <a href="{% url 'dashboard:alerts' %}" class="btn btn-sm btn-outline-secondary">{% trans "View all" %}</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th>{% trans "Severity" %}</th>
+                <th>{% trans "Message" %}</th>
+                <th>{% trans "Raised" %}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for alert in alerts %}
+                <tr>
+                  <td><span class="badge {{ alert.severity|severity_class }}">{{ alert.get_severity_display }}</span></td>
+                  <td>{{ alert.message }}</td>
+                  <td class="text-nowrap small text-muted">{{ alert.created_at|date:"d/m H:i" }}</td>
+                </tr>
+              {% empty %}
+                <tr><td colspan="3" class="text-center text-muted py-4">{% trans "No active alerts - everything is within limits." %}</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card h-100">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Output by shift" %}</h2></div>
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th>{% trans "Shift" %}</th>
+                <th class="text-end">{% trans "Produced" %}</th>
+                <th class="text-end">{% trans "Attainment" %}</th>
+                <th class="text-end">{% trans "Defects" %}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in by_shift %}
+                <tr>
+                  <td>{{ row.shift }}</td>
+                  <td class="text-end">{{ row.produced }}</td>
+                  <td class="text-end">{{ row.attainment }}%</td>
+                  <td class="text-end">{{ row.defect_rate }}%</td>
+                </tr>
+              {% empty %}
+                <tr><td colspan="4" class="text-center text-muted py-4">{% trans "No data" %}</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  {{ daily|json_script:"daily-data" }}
+  {{ by_line|json_script:"by-line-data" }}
+  {{ pareto|json_script:"pareto-data" }}
+  {{ by_shift|json_script:"by-shift-data" }}
+  <script>
+    DashboardCharts.line("dailyChart", "daily-data", {
+      xKey: "date",
+      series: [
+        { key: "produced", label: "{% trans 'Produced' %}", color: "#1f77b4" },
+        { key: "target", label: "{% trans 'Target' %}", color: "#adb5bd" }
+      ]
+    });
+    DashboardCharts.bar("byLineChart", "by-line-data", {
+      xKey: "line", yKey: "produced", label: "{% trans 'Produced' %}"
+    });
+    DashboardCharts.horizontalBar("paretoChart", "pareto-data", {
+      xKey: "label", yKey: "hours", label: "{% trans 'Hours' %}"
+    });
+    DashboardCharts.doughnut("oeeChart", "oee-data", {
+      labels: ["{% trans 'Availability' %}", "{% trans 'Performance' %}", "{% trans 'Quality' %}"],
+      values: [{{ oee.availability }}, {{ oee.performance }}, {{ oee.quality }}]
+    });
+  </script>
+{% endblock %}

@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load i18n dashboard_extras %}
+
+{% block title %}{% trans "Quality" %} · {{ APP_NAME }}{% endblock %}
+{% block page_title %}{% trans "Quality" %}{% endblock %}
+
+{% block content %}
+  {% include "dashboard/partials/_filter_bar.html" %}
+
+  <div class="row g-3 mb-3">
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card kpi-danger">
+        <div class="kpi-label">{% trans "Defect rate" %}</div>
+        <div class="kpi-value">{{ summary.defect_rate }}<span class="kpi-unit">%</span></div>
+        <div class="kpi-sub">{{ summary.defected }} / {{ summary.checked }}</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card kpi-success">
+        <div class="kpi-label">{% trans "Pass rate" %}</div>
+        <div class="kpi-value">{{ summary.pass_rate }}<span class="kpi-unit">%</span></div>
+        <div class="kpi-sub">{{ summary.passed }} {% trans "passed" %}</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card kpi-primary">
+        <div class="kpi-label">{% trans "Checks" %}</div>
+        <div class="kpi-value">{{ summary.checks }}</div>
+        <div class="kpi-sub">{{ summary.occurrences }} {% trans "occurrences" %}</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card kpi-info">
+        <div class="kpi-label">{% trans "Checked units" %}</div>
+        <div class="kpi-value">{{ summary.checked }}</div>
+        <div class="kpi-sub">{% trans "in the selected window" %}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Defect rate by product" %}</h2></div>
+        <div class="card-body chart-wrap">
+          <canvas id="productQualityChart" height="130"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Defect rate by line" %}</h2></div>
+        <div class="card-body chart-wrap">
+          <canvas id="lineQualityChart" height="130"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-lg-5">
+      <div class="card h-100">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Defect types" %}</h2></div>
+        <div class="card-body chart-wrap">
+          <canvas id="defectTypeChart" height="170"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div class="card h-100">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Defect type breakdown" %}</h2></div>
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th>{% trans "Defect type" %}</th>
+                <th class="text-end">{% trans "Checks" %}</th>
+                <th class="text-end">{% trans "Defective" %}</th>
+                <th class="text-end">{% trans "Share" %}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in by_defect_type %}
+                <tr>
+                  <td>{{ row.label }}</td>
+                  <td class="text-end">{{ row.checks }}</td>
+                  <td class="text-end">{{ row.defected }}</td>
+                  <td class="text-end">{{ row.share }}%</td>
+                </tr>
+              {% empty %}
+                <tr><td colspan="4" class="text-center text-muted py-4">{% trans "No data" %}</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2 class="h6 mb-0">{% trans "Latest quality checks" %}</h2></div>
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>{% trans "Checked at" %}</th>
+            <th>{% trans "Line" %}</th>
+            <th>{% trans "Product" %}</th>
+            <th>{% trans "Shift" %}</th>
+            <th class="text-end">{% trans "Checked" %}</th>
+            <th class="text-end">{% trans "Passed" %}</th>
+            <th class="text-end">{% trans "Defected" %}</th>
+            <th class="text-end">{% trans "Rate" %}</th>
+            <th>{% trans "Defect type" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in checks %}
+            <tr>
+              <td class="text-nowrap">{{ row.checked_at|date:"d/m/Y H:i" }}</td>
+              <td>{{ row.production_line.name }}</td>
+              <td>{{ row.product.code }}</td>
+              <td>{{ row.shift.name|default:"-" }}</td>
+              <td class="text-end">{{ row.qty_checked }}</td>
+              <td class="text-end">{{ row.qty_passed }}</td>
+              <td class="text-end text-danger">{{ row.qty_defected }}</td>
+              <td class="text-end">{{ row.defect_rate }}%</td>
+              <td>{{ row.get_defect_type_display }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="9" class="text-center text-muted py-4">{% trans "No data" %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  {{ by_product|json_script:"quality-product-data" }}
+  {{ by_line|json_script:"quality-line-data" }}
+  {{ by_defect_type|json_script:"defect-type-data" }}
+  <script>
+    DashboardCharts.bar("productQualityChart", "quality-product-data", {
+      xKey: "code", yKey: "defect_rate", label: "{% trans 'Defect rate %' %}", ySuffix: "%"
+    });
+    DashboardCharts.bar("lineQualityChart", "quality-line-data", {
+      xKey: "line", yKey: "defect_rate", label: "{% trans 'Defect rate %' %}", ySuffix: "%"
+    });
+    DashboardCharts.doughnut("defectTypeChart", "defect-type-data", {
+      labelKey: "label", valueKey: "defected"
+    });
+  </script>
+{% endblock %}

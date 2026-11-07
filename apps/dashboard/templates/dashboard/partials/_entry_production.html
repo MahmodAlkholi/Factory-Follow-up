@@ -1,0 +1,68 @@
+{% load i18n %}
+<form hx-post="{% url 'dashboard:entry-production' %}"
+      hx-target="#entry-production-result"
+      hx-swap="innerHTML"
+      class="row g-2">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div class="col-12 col-md-4">
+    <label class="form-label small" for="p_line">{% trans "Line" %}</label>
+    {{ form.production_line }}
+    {{ form.production_line.errors }}
+  </div>
+  <div class="col-12 col-md-4">
+    <label class="form-label small" for="p_machine">{% trans "Machine" %}</label>
+    {{ form.machine }}
+    {{ form.machine.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="p_shift">{% trans "Shift" %}</label>
+    {{ form.shift }}
+    {{ form.shift.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="p_product">{% trans "Product" %}</label>
+    {{ form.product }}
+    {{ form.product.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="p_date">{% trans "Date" %}</label>
+    {{ form.date }}
+    {{ form.date.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="p_hour">{% trans "Hour" %}</label>
+    {{ form.hour }}
+    {{ form.hour.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="p_produced">{% trans "Produced" %}</label>
+    {{ form.qty_produced }}
+    {{ form.qty_produced.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="p_good">{% trans "Good" %}</label>
+    {{ form.qty_good }}
+    {{ form.qty_good.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="p_defect">{% trans "Defect" %}</label>
+    {{ form.qty_defect }}
+    {{ form.qty_defect.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="p_target">{% trans "Target" %}</label>
+    {{ form.target_qty }}
+    {{ form.target_qty.errors }}
+  </div>
+  <div class="col-12 col-md-4">
+    <label class="form-label small" for="p_notes">{% trans "Notes" %}</label>
+    {{ form.notes }}
+  </div>
+  <div class="col-12 col-md-2 d-grid align-self-end">
+    <button type="submit" class="btn btn-primary">{% trans "Save production" %}</button>
+  </div>
+</form>
+{% if message %}
+  <div class="alert alert-success mt-3 mb-0 py-2">{{ message }}</div>
+{% endif %}

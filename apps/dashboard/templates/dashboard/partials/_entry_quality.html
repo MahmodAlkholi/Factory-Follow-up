@@ -1,0 +1,67 @@
+{% load i18n %}
+<form hx-post="{% url 'dashboard:entry-quality' %}"
+      hx-target="#entry-quality-result"
+      hx-swap="innerHTML"
+      class="row g-2">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div class="col-12 col-md-3">
+    <label class="form-label small" for="q_line">{% trans "Line" %}</label>
+    {{ form.production_line }}
+    {{ form.production_line.errors }}
+  </div>
+  <div class="col-12 col-md-3">
+    <label class="form-label small" for="q_machine">{% trans "Machine" %}</label>
+    {{ form.machine }}
+    {{ form.machine.errors }}
+  </div>
+  <div class="col-12 col-md-2">
+    <label class="form-label small" for="q_product">{% trans "Product" %}</label>
+    {{ form.product }}
+    {{ form.product.errors }}
+  </div>
+  <div class="col-12 col-md-2">
+    <label class="form-label small" for="q_shift">{% trans "Shift" %}</label>
+    {{ form.shift }}
+    {{ form.shift.errors }}
+  </div>
+  <div class="col-12 col-md-2">
+    <label class="form-label small" for="q_checked_at">{% trans "Checked at" %}</label>
+    {{ form.checked_at }}
+    {{ form.checked_at.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="q_checked">{% trans "Checked" %}</label>
+    {{ form.qty_checked }}
+    {{ form.qty_checked.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="q_passed">{% trans "Passed" %}</label>
+    {{ form.qty_passed }}
+    {{ form.qty_passed.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="q_defected">{% trans "Defected" %}</label>
+    {{ form.qty_defected }}
+    {{ form.qty_defected.errors }}
+  </div>
+  <div class="col-6 col-md-2">
+    <label class="form-label small" for="q_count">{% trans "Occurrences" %}</label>
+    {{ form.defect_count }}
+  </div>
+  <div class="col-6 col-md-3">
+    <label class="form-label small" for="q_type">{% trans "Defect type" %}</label>
+    {{ form.defect_type }}
+    {{ form.defect_type.errors }}
+  </div>
+  <div class="col-12 col-md-7">
+    <label class="form-label small" for="q_notes">{% trans "Notes" %}</label>
+    {{ form.notes }}
+  </div>
+  <div class="col-12 col-md-2 d-grid align-self-end">
+    <button type="submit" class="btn btn-primary">{% trans "Save quality check" %}</button>
+  </div>
+</form>
+{% if message %}
+  <div class="alert alert-success mt-3 mb-0 py-2">{{ message }}</div>
+{% endif %}

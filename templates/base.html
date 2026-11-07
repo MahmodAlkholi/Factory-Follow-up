@@ -1,0 +1,134 @@
+{% load static i18n dashboard_extras %}<!DOCTYPE html>
+<html lang="{{ current_language }}" dir="{{ text_direction }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f2942">
+  <title>{% block title %}{{ APP_NAME }}{% endblock %}</title>
+
+  {% if is_rtl %}
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap.rtl.min.css' %}">
+  {% else %}
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap.min.css' %}">
+  {% endif %}
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🏭</text></svg>">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="app-body">
+
+<div class="app-shell">
+
+  {# ----------------------------- sidebar ----------------------------- #}
+  <aside class="app-sidebar" id="appSidebar">
+    <div class="sidebar-brand">
+      <span class="brand-mark">FD</span>
+      <span class="brand-text">{% trans "Factory Follow-up" %}</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      {% for item in nav_items %}
+        <a class="nav-link {% if request.resolver_match.url_name == item.url_name %}active{% endif %}"
+           href="{% url item.url_name %}">
+          {% include "dashboard/partials/_icon.html" with name=item.icon %}
+          <span>{% if item.url_name == 'dashboard:overview' %}{% trans "Overview" %}{% elif item.url_name == 'dashboard:production' %}{% trans "Production" %}{% elif item.url_name == 'dashboard:downtime' %}{% trans "Downtime" %}{% elif item.url_name == 'dashboard:quality' %}{% trans "Quality" %}{% elif item.url_name == 'dashboard:inventory' %}{% trans "Inventory" %}{% else %}{% trans "Reports" %}{% endif %}</span>
+        </a>
+      {% endfor %}
+
+      {% if can_enter_data %}
+        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard:data-entry' %}active{% endif %}"
+           href="{% url 'dashboard:data-entry' %}">
+          {% include "dashboard/partials/_icon.html" with name="edit" %}
+          <span>{% trans "Data entry" %}</span>
+        </a>
+        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard:import' %}active{% endif %}"
+           href="{% url 'dashboard:import' %}">
+          {% include "dashboard/partials/_icon.html" with name="upload" %}
+          <span>{% trans "Bulk import" %}</span>
+        </a>
+      {% endif %}
+
+      <a class="nav-link {% if request.resolver_match.url_name == 'dashboard:alerts' %}active{% endif %}"
+         href="{% url 'dashboard:alerts' %}">
+        {% include "dashboard/partials/_icon.html" with name="bell" %}
+        <span>{% trans "Alerts" %}</span>
+      </a>
+
+      {% if can_manage %}
+        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard:thresholds' %}active{% endif %}"
+           href="{% url 'dashboard:thresholds' %}">
+          {% include "dashboard/partials/_icon.html" with name="sliders" %}
+          <span>{% trans "Thresholds" %}</span>
+        </a>
+        <a class="nav-link" href="/django-admin/">
+          {% include "dashboard/partials/_icon.html" with name="settings" %}
+          <span>{% trans "Administration" %}</span>
+        </a>
+      {% endif %}
+    </nav>
+
+    <div class="sidebar-footer">
+      <form action="{% url 'set_language' %}" method="post" class="language-form">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <select name="language" class="form-select form-select-sm" onchange="this.form.submit()"
+                aria-label="{% trans 'Language' %}">
+          {% get_available_languages as LANGUAGES %}
+          {% for code, name in LANGUAGES %}
+            <option value="{{ code }}" {% if code == current_language %}selected{% endif %}>{{ name }}</option>
+          {% endfor %}
+        </select>
+      </form>
+    </div>
+  </aside>
+
+  {# ------------------------------ main ------------------------------- #}
+  <div class="app-main">
+    <header class="app-topbar">
+      <button class="btn btn-sm btn-outline-secondary d-lg-none" type="button"
+              onclick="document.getElementById('appSidebar').classList.toggle('show')">
+        ☰
+      </button>
+
+      <div class="topbar-title">
+        <h1 class="h5 mb-0">{% block page_title %}{% trans "Overview" %}{% endblock %}</h1>
+        {% block page_subtitle %}{% endblock %}
+      </div>
+
+      <div class="topbar-actions">
+        {% block topbar_actions %}{% endblock %}
+        <a class="btn btn-sm btn-outline-secondary position-relative" href="{% url 'dashboard:alerts' %}"
+           title="{% trans 'Alerts' %}">
+          {% include "dashboard/partials/_icon.html" with name="bell" %}
+          {% if alert_count %}<span class="alert-dot">{{ alert_count }}</span>{% endif %}
+        </a>
+        <div class="user-chip">
+          <span class="user-avatar">{{ user.username|first|upper }}</span>
+          <span class="d-none d-md-inline">
+            <span class="d-block fw-semibold">{{ user.get_full_name|default:user.username }}</span>
+            <small class="text-muted">{% for role in user_roles %}<span class="role-chip">{{ role }}</span>{% endfor %}</small>
+          </span>
+        </div>
+        <form action="{% url 'dashboard:logout' %}" method="post" class="d-inline">
+          {% csrf_token %}
+          <button class="btn btn-sm btn-outline-secondary" type="submit" title="{% trans 'Sign out' %}">
+            {% include "dashboard/partials/_icon.html" with name="logout" %}
+          </button>
+        </form>
+      </div>
+    </header>
+
+    <main class="app-content">
+      {% include "dashboard/partials/_messages.html" %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+
+<script src="{% static 'vendor/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/htmx.min.js' %}"></script>
+<script src="{% static 'vendor/chart.umd.min.js' %}"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

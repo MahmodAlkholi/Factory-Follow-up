@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Bulk import" %} · {{ APP_NAME }}{% endblock %}
+{% block page_title %}{% trans "Bulk import" %}{% endblock %}
+
+{% block content %}
+  <div class="row g-3">
+    <div class="col-lg-5">
+      <div class="card">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Upload a file" %}</h2></div>
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label" for="id_data_type">{% trans "Data type" %}</label>
+              {{ form.data_type }}
+              {{ form.data_type.errors }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="id_file">{% trans "File" %}</label>
+              {{ form.file }}
+              {{ form.file.errors }}
+              <div class="form-text">{{ form.file.help_text }}</div>
+            </div>
+            <div class="form-check mb-3">
+              {{ form.update_existing }}
+              <label class="form-check-label" for="id_update_existing">{{ form.update_existing.label }}</label>
+            </div>
+            <button class="btn btn-primary" type="submit">{% trans "Import" %}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-7">
+      <div class="card mb-3">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Templates" %}</h2></div>
+        <div class="card-body">
+          <p class="text-muted small">
+            {% trans "Download a template with the expected columns, fill it in and upload it back. Column names are matched loosely - 'Line Code', 'line_code' and 'line' all work." %}
+          </p>
+          <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'dashboard:import-template' 'production' %}">{% trans "Production" %}</a>
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'dashboard:import-template' 'downtime' %}">{% trans "Downtime" %}</a>
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'dashboard:import-template' 'quality' %}">{% trans "Quality" %}</a>
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'dashboard:import-template' 'stock' %}">{% trans "Stock" %}</a>
+          </div>
+        </div>
+      </div>
+
+      {% if result %}
+        <div class="card">
+          <div class="card-header"><h2 class="h6 mb-0">{% trans "Result" %}</h2></div>
+          <div class="card-body">
+            {% if result.ok %}
+              <div class="alert alert-success">
+                {{ result.message }}
+                <strong>{{ result.created }}</strong> {% trans "created" %},
+                <strong>{{ result.updated }}</strong> {% trans "updated" %}.
+              </div>
+            {% else %}
+              <div class="alert alert-danger">{{ result.message }}</div>
+            {% endif %}
+
+            {% if result.errors %}
+              <h3 class="h6 mt-3">{% trans "Rows that could not be imported" %}</h3>
+              <div class="table-responsive">
+                <table class="table table-sm table-hover mb-0">
+                  <thead>
+                    <tr><th>{% trans "Row" %}</th><th>{% trans "Problem" %}</th></tr>
+                  </thead>
+                  <tbody>
+                    {% for error in result.errors %}
+                      <tr>
+                        <td>{{ error.row }}</td>
+                        <td class="text-danger">{{ error.error }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,1256 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Factory Follow-up Dashboard\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+msgid "Validation failed"
+msgstr "فشل التحقق"
+
+msgid "Production line code, e.g. LINE-A"
+msgstr "كود خط الإنتاج، مثال LINE-A"
+
+msgid "Shift code, e.g. M"
+msgstr "كود الوردية، مثال M"
+
+msgid "Product code, e.g. PRD-001"
+msgstr "كود المنتج، مثال PRD-001"
+
+msgid "No records supplied"
+msgstr "لا توجد سجلات مرسلة"
+
+msgid "Unknown line code: %(code)s"
+msgstr "كود خط غير معروف: %(code)s"
+
+msgid "Unknown shift code: %(code)s"
+msgstr "كود وردية غير معروف: %(code)s"
+
+msgid "Unknown product code: %(code)s"
+msgstr "كود منتج غير معروف: %(code)s"
+
+msgid "Unknown machine code: %(code)s"
+msgstr "كود آلة غير معروف: %(code)s"
+
+msgid "Idle"
+msgstr "خامل"
+
+msgid "Running"
+msgstr "يعمل"
+
+msgid "Stopped"
+msgstr "متوقف"
+
+msgid "Maintenance"
+msgstr "صيانة"
+
+msgid "Fault"
+msgstr "عطل"
+
+msgid "Mechanical"
+msgstr "ميكانيكي"
+
+msgid "Electrical"
+msgstr "كهربائي"
+
+msgid "Material / feeding"
+msgstr "خامات / تغذية"
+
+msgid "Manpower"
+msgstr "عمالة"
+
+msgid "Process / changeover"
+msgstr "تغيير قالب / إعدادات"
+
+msgid "Planned maintenance"
+msgstr "صيانة مخططة"
+
+msgid "Quality hold"
+msgstr "حجز جودة"
+
+msgid "Other"
+msgstr "أخرى"
+
+msgid "Dimensional"
+msgstr "أبعاد"
+
+msgid "Surface"
+msgstr "سطح"
+
+msgid "Functional"
+msgstr "وظيفي"
+
+msgid "Assembly"
+msgstr "تجميع"
+
+msgid "Material flaw"
+msgstr "عيب في الخامة"
+
+msgid "Contamination"
+msgstr "تلوث"
+
+msgid "Colour"
+msgstr "لون"
+
+msgid "Manual entry"
+msgstr "إدخال يدوي"
+
+msgid "CSV / Excel import"
+msgstr "استيراد CSV / Excel"
+
+msgid "API / IoT"
+msgstr "API / إنترنت الأشياء"
+
+msgid "System"
+msgstr "النظام"
+
+msgid "Stock in"
+msgstr "وارد مخزون"
+
+msgid "Stock out"
+msgstr "منصرف مخزون"
+
+msgid "Adjustment"
+msgstr "تسوية"
+
+msgid "Transfer in"
+msgstr "تحويل وارد"
+
+msgid "Transfer out"
+msgstr "تحويل صادر"
+
+msgid "In stock"
+msgstr "متوفر"
+
+msgid "Low stock"
+msgstr "مخزون منخفض"
+
+msgid "Out of stock"
+msgstr "نفد المخزون"
+
+msgid "Over stocked"
+msgstr "مخزون زائد"
+
+msgid "OEE (%)"
+msgstr "الكفاءة الإجمالية للمعدات (%)"
+
+msgid "Availability (%)"
+msgstr "جاهزية التشغيل (%)"
+
+msgid "Performance (%)"
+msgstr "الإنتاجية (%)"
+
+msgid "Quality rate (%)"
+msgstr "نسبة الجودة (%)"
+
+msgid "Defect rate (%)"
+msgstr "نسبة العيوب (%)"
+
+msgid "Downtime (minutes)"
+msgstr "التوقف (دقائق)"
+
+msgid "Line stopped (minutes)"
+msgstr "توقف الخط (دقائق)"
+
+msgid "Output vs target (%)"
+msgstr "الإنتاج مقابل المستهدف (%)"
+
+msgid "Low stock items"
+msgstr "أصناف بمخزون منخفض"
+
+msgid "Global"
+msgstr "عام"
+
+msgid "Factory"
+msgstr "مصنع"
+
+msgid "Production line"
+msgstr "خط إنتاج"
+
+msgid "Machine"
+msgstr "آلة"
+
+msgid "Product"
+msgstr "منتج"
+
+msgid "Greater than"
+msgstr "أكبر من"
+
+msgid "Greater or equal"
+msgstr "أكبر من أو يساوي"
+
+msgid "Less than"
+msgstr "أصغر من"
+
+msgid "Less or equal"
+msgstr "أصغر من أو يساوي"
+
+msgid "Info"
+msgstr "معلومة"
+
+msgid "Warning"
+msgstr "تحذير"
+
+msgid "Critical"
+msgstr "حرج"
+
+msgid "Open"
+msgstr "مفتوح"
+
+msgid "Acknowledged"
+msgstr "تم الإقرار"
+
+msgid "Resolved"
+msgstr "تم الإغلاق"
+
+msgid "name"
+msgstr "الاسم"
+
+msgid "code"
+msgstr "الكود"
+
+msgid "location"
+msgstr "الموقع"
+
+msgid "city"
+msgstr "المدينة"
+
+msgid "country"
+msgstr "الدولة"
+
+msgid "timezone"
+msgstr "المنطقة الزمنية"
+
+msgid "IANA name, e.g. Africa/Cairo"
+msgstr "اسم IANA، مثال Africa/Cairo"
+
+msgid "active"
+msgstr "نشط"
+
+msgid "notes"
+msgstr "ملاحظات"
+
+msgid "factory"
+msgstr "المصنع"
+
+msgid "factories"
+msgstr "المصانع"
+
+msgid "description"
+msgstr "الوصف"
+
+msgid "target daily quantity"
+msgstr "الكمية اليومية المستهدفة"
+
+msgid "Used as the performance standard when computing OEE"
+msgstr "يُستخدم كمرجع للإنتاجية عند حساب الكفاءة الإجمالية للمعدات"
+
+msgid "sort order"
+msgstr "ترتيب العرض"
+
+msgid "production line"
+msgstr "خط إنتاج"
+
+msgid "production lines"
+msgstr "خطوط الإنتاج"
+
+msgid "line"
+msgstr "الخط"
+
+msgid "manufacturer"
+msgstr "الشركة المصنعة"
+
+msgid "model"
+msgstr "الموديل"
+
+msgid "status"
+msgstr "الحالة"
+
+msgid "install date"
+msgstr "تاريخ التركيب"
+
+msgid "machine"
+msgstr "الآلة"
+
+msgid "machines"
+msgstr "الآلات"
+
+msgid "start time"
+msgstr "وقت البدء"
+
+msgid "end time"
+msgstr "وقت الانتهاء"
+
+msgid "crosses midnight"
+msgstr "يمتد لمنتصف الليل"
+
+msgid "shift"
+msgstr "الوردية"
+
+msgid "shifts"
+msgstr "الورديات"
+
+msgid "category"
+msgstr "الفئة"
+
+msgid "unit"
+msgstr "الوحدة"
+
+msgid "ideal cycle time (seconds)"
+msgstr "زمن الدورة المثالي (ثانية)"
+
+msgid "Standard seconds per one good piece - used for OEE performance"
+msgstr "الثواني القياسية لكل قطعة سليمة - تُستخدم في حساب الإنتاجية"
+
+msgid "standard daily quantity"
+msgstr "الكمية اليومية القياسية"
+
+msgid "product"
+msgstr "المنتج"
+
+msgid "products"
+msgstr "المنتجات"
+
+msgid "date"
+msgstr "التاريخ"
+
+msgid "hour"
+msgstr "الساعة"
+
+msgid "Hour of day in the plant timezone (0-23)"
+msgstr "ساعة اليوم بتوقيت المصنع (0-23)"
+
+msgid "produced"
+msgstr "الإنتاج"
+
+msgid "good"
+msgstr "السليم"
+
+msgid "defect"
+msgstr "التالف"
+
+msgid "target"
+msgstr "المستهدف"
+
+msgid "recorded at"
+msgstr "سُجل في"
+
+msgid "source"
+msgstr "المصدر"
+
+msgid "recorded by"
+msgstr "سجله"
+
+msgid "production log"
+msgstr "سجل إنتاج"
+
+msgid "production logs"
+msgstr "سجلات الإنتاج"
+
+msgid "started at"
+msgstr "بدأ في"
+
+msgid "ended at"
+msgstr "انتهى في"
+
+msgid "duration (minutes)"
+msgstr "المدة (دقائق)"
+
+msgid "reason category"
+msgstr "فئة السبب"
+
+msgid "reason code"
+msgstr "كود السبب"
+
+msgid "detail"
+msgstr "التفاصيل"
+
+msgid "downtime event"
+msgstr "حدث توقف"
+
+msgid "downtime events"
+msgstr "أحداث التوقف"
+
+msgid "checked at"
+msgstr "تم الفحص في"
+
+msgid "checked"
+msgstr "المفحوص"
+
+msgid "passed"
+msgstr "المجتاز"
+
+msgid "defected"
+msgstr "المعيب"
+
+msgid "defect type"
+msgstr "نوع العيب"
+
+msgid "defect occurrences"
+msgstr "عدد مرات العيب"
+
+msgid "inspector"
+msgstr "الفاحص"
+
+msgid "quality check"
+msgstr "فحص جودة"
+
+msgid "quality checks"
+msgstr "فحوصات الجودة"
+
+msgid "warehouse code"
+msgstr "كود المخزن"
+
+msgid "warehouse"
+msgstr "المخزن"
+
+msgid "quantity on hand"
+msgstr "الكمية المتوفرة"
+
+msgid "quantity reserved"
+msgstr "الكمية المحجوزة"
+
+msgid "reorder point"
+msgstr "حد إعادة الطلب"
+
+msgid "reorder quantity"
+msgstr "كمية إعادة الطلب"
+
+msgid "unit cost"
+msgstr "تكلفة الوحدة"
+
+msgid "inventory item"
+msgstr "صنف مخزون"
+
+msgid "inventory items"
+msgstr "أصناف المخزون"
+
+msgid "item"
+msgstr "الصنف"
+
+msgid "movement type"
+msgstr "نوع الحركة"
+
+msgid "quantity"
+msgstr "الكمية"
+
+msgid "balance after"
+msgstr "الرصيد بعد الحركة"
+
+msgid "Snapshot of the on-hand quantity once this movement was applied"
+msgstr "الرصيد المتوفر بعد تنفيذ هذه الحركة"
+
+msgid "reference"
+msgstr "المرجع"
+
+msgid "reason"
+msgstr "السبب"
+
+msgid "moved at"
+msgstr "تاريخ الحركة"
+
+msgid "stock movement"
+msgstr "حركة مخزون"
+
+msgid "stock movements"
+msgstr "حركات المخزون"
+
+msgid "API token"
+msgstr "رمز API"
+
+msgid "API tokens"
+msgstr "رموز API"
+
+msgid "user"
+msgstr "المستخدم"
+
+msgid "job title"
+msgstr "المسمى الوظيفي"
+
+msgid "phone"
+msgstr "الهاتف"
+
+msgid "user profile"
+msgstr "ملف المستخدم"
+
+msgid "user profiles"
+msgstr "ملفات المستخدمين"
+
+msgid "scope"
+msgstr "النطاق"
+
+msgid "metric"
+msgstr "المؤشر"
+
+msgid "operator"
+msgstr "المقارنة"
+
+msgid "value"
+msgstr "القيمة"
+
+msgid "severity"
+msgstr "الخطورة"
+
+msgid "cooldown (minutes)"
+msgstr "مدة التهدئة (دقائق)"
+
+msgid "Minimum silence between two alerts raised by this rule"
+msgstr "أقل مدة صمت بين تنبيهين من نفس القاعدة"
+
+msgid "send email"
+msgstr "إرسال بريد إلكتروني"
+
+msgid "email recipients"
+msgstr "مستلمو البريد"
+
+msgid "threshold"
+msgstr "الحد"
+
+msgid "thresholds"
+msgstr "الحدود"
+
+msgid "All"
+msgstr "الكل"
+
+msgid "measured value"
+msgstr "القيمة المقاسة"
+
+msgid "threshold value"
+msgstr "قيمة الحد"
+
+msgid "message"
+msgstr "الرسالة"
+
+msgid "created at"
+msgstr "أُنشئ في"
+
+msgid "acknowledged at"
+msgstr "تم الإقرار في"
+
+msgid "acknowledged by"
+msgstr "تم الإقرار بواسطة"
+
+msgid "resolved at"
+msgstr "أُغلق في"
+
+msgid "email sent at"
+msgstr "أُرسل البريد في"
+
+msgid "alert"
+msgstr "تنبيه"
+
+msgid "alerts"
+msgstr "التنبيهات"
+
+msgid "%(scope)s: %(metric)s is %(value)s %(operator)s %(threshold)s"
+msgstr "%(scope)s: %(metric)s هو %(value)s %(operator)s %(threshold)s"
+
+msgid "ongoing"
+msgstr "مستمر"
+
+msgid "from"
+msgstr "من"
+
+msgid "to"
+msgstr "إلى"
+
+msgid "All data"
+msgstr "كل البيانات"
+
+msgid "No data for the selected filters"
+msgstr "لا توجد بيانات للفلاتر المختارة"
+
+msgid "Factory Follow-up Report"
+msgstr "تقرير متابعة المصنع"
+
+msgid "Filters"
+msgstr "الفلاتر"
+
+msgid "Generated at"
+msgstr "تاريخ الإنشاء"
+
+msgid "KPI"
+msgstr "مؤشر الأداء"
+
+msgid "Value"
+msgstr "القيمة"
+
+msgid "Generated at %s"
+msgstr "تاريخ الإنشاء %s"
+
+msgid "Produced"
+msgstr "الإنتاج"
+
+msgid "Target"
+msgstr "المستهدف"
+
+msgid "Attainment %"
+msgstr "نسبة التحقق %"
+
+msgid "Defect rate %"
+msgstr "نسبة العيوب %"
+
+msgid "OEE %"
+msgstr "الكفاءة الإجمالية %"
+
+msgid "Availability %"
+msgstr "نسبة الجاهزية %"
+
+msgid "Performance %"
+msgstr "نسبة الإنتاجية %"
+
+msgid "Quality %"
+msgstr "نسبة الجودة %"
+
+msgid "Downtime (h)"
+msgstr "التوقف (ساعة)"
+
+msgid "Downtime (hours)"
+msgstr "التوقف (ساعة)"
+
+msgid "Downtime events"
+msgstr "أحداث التوقف"
+
+msgid "Checked"
+msgstr "المفحوص"
+
+msgid "Quality checked"
+msgstr "المفحوص"
+
+msgid "Defects"
+msgstr "العيوب"
+
+msgid "Defects found"
+msgstr "العيوب"
+
+msgid "Stock value"
+msgstr "قيمة المخزون"
+
+msgid "Key figures"
+msgstr "أهم الأرقام"
+
+msgid "Metric"
+msgstr "المؤشر"
+
+msgid "Downtime - top reasons"
+msgstr "التوقف - أهم الأسباب"
+
+msgid "Reason"
+msgstr "السبب"
+
+msgid "Events"
+msgstr "الأحداث"
+
+msgid "Hours"
+msgstr "الساعات"
+
+msgid "Share"
+msgstr "النسبة"
+
+msgid "Cumulative"
+msgstr "التراكمي"
+
+msgid "Production records (latest 40)"
+msgstr "سجلات الإنتاج (آخر 40)"
+
+msgid "Date"
+msgstr "التاريخ"
+
+msgid "Line"
+msgstr "الخط"
+
+msgid "Shift"
+msgstr "الوردية"
+
+msgid "Defect"
+msgstr "التالف"
+
+msgid "Alerts"
+msgstr "التنبيهات"
+
+msgid "Run check now"
+msgstr "تشغيل الفحص الآن"
+
+msgid "Severity"
+msgstr "الخطورة"
+
+msgid "Message"
+msgstr "الرسالة"
+
+msgid "Scope"
+msgstr "النطاق"
+
+msgid "Raised"
+msgstr "تاريخ الظهور"
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Actions"
+msgstr "إجراءات"
+
+msgid "Acknowledge"
+msgstr "إقرار"
+
+msgid "Resolve"
+msgstr "إغلاق"
+
+msgid "No alerts for this filter."
+msgstr "لا توجد تنبيهات بهذا الفلتر."
+
+msgid "Data entry"
+msgstr "إدخال البيانات"
+
+msgid "Everything you type here is visible on the dashboards immediately."
+msgstr "كل ما تدخله هنا يظهر على لوحات المتابعة فوراً."
+
+msgid "Production"
+msgstr "الإنتاج"
+
+msgid "Downtime"
+msgstr "التوقف"
+
+msgid "Quality"
+msgstr "الجودة"
+
+msgid "Stock"
+msgstr "المخزون"
+
+msgid "Production record"
+msgstr "سجل إنتاج"
+
+msgid "Downtime event"
+msgstr "حدث توقف"
+
+msgid "Quality check"
+msgstr "فحص جودة"
+
+msgid "Stock movement"
+msgstr "حركة مخزون"
+
+msgid "Got a spreadsheet from the shop floor? Import it in one go."
+msgstr "هل لديك ملف إكسل من المصنع؟ استورده دفعة واحدة."
+
+msgid "Open bulk import"
+msgstr "فتح الاستيراد الجماعي"
+
+msgid "Downtime hours"
+msgstr "ساعات التوقف"
+
+msgid "minutes"
+msgstr "دقيقة"
+
+msgid "Average"
+msgstr "المتوسط"
+
+msgid "min"
+msgstr "دقيقة"
+
+msgid "Ongoing now"
+msgstr "مستمر الآن"
+
+msgid "machines still stopped"
+msgstr "آلات ما زالت متوقفة"
+
+msgid "Top reason"
+msgstr "أهم سبب"
+
+msgid "No data"
+msgstr "لا توجد بيانات"
+
+msgid "Pareto - downtime by reason"
+msgstr "مخطط باريتو - التوقف حسب السبب"
+
+msgid "Downtime by machine"
+msgstr "التوقف حسب الآلة"
+
+msgid "Machine timeline"
+msgstr "الخط الزمني للآلات"
+
+msgid "Each bar is one downtime event, positioned inside the selected window."
+msgstr "كل عمود يمثل حدث توقف داخل الفترة المختارة."
+
+msgid "No downtime recorded for the selected filters."
+msgstr "لا يوجد توقف مسجل للفلاتر المختارة."
+
+msgid "Start"
+msgstr "البداية"
+
+msgid "End"
+msgstr "النهاية"
+
+msgid "Detail"
+msgstr "التفاصيل"
+
+msgid "Minutes"
+msgstr "الدقائق"
+
+msgid "Source"
+msgstr "المصدر"
+
+msgid "Bulk import"
+msgstr "استيراد جماعي"
+
+msgid "Upload a file"
+msgstr "رفع ملف"
+
+msgid "Data type"
+msgstr "نوع البيانات"
+
+msgid "File"
+msgstr "الملف"
+
+msgid "Import"
+msgstr "استيراد"
+
+msgid "Templates"
+msgstr "القوالب"
+
+msgid ""
+"Download a template with the expected columns, fill it in and upload it "
+"back. Column names are matched loosely - 'Line Code', 'line_code' and 'line'"
+" all work."
+msgstr ""
+"حمّل قالباً بالأعمدة المتوقعة، املأه ثم ارفعه. مطابقة أسماء الأعمدة مرنة - "
+"'Line Code' و'line_code' و'line' تعمل كلها."
+
+msgid "Result"
+msgstr "النتيجة"
+
+msgid "created"
+msgstr "تم الإنشاء"
+
+msgid "updated"
+msgstr "تم التحديث"
+
+msgid "Rows that could not be imported"
+msgstr "صفوف تعذر استيرادها"
+
+msgid "Row"
+msgstr "الصف"
+
+msgid "Problem"
+msgstr "المشكلة"
+
+msgid "Inventory"
+msgstr "المخزون"
+
+msgid "Stock items"
+msgstr "أصناف المخزون"
+
+msgid "units"
+msgstr "وحدة"
+
+msgid "at current unit cost"
+msgstr "بسعر تكلفة الوحدة الحالي"
+
+msgid "at or below reorder point"
+msgstr "عند حد إعادة الطلب أو أقل"
+
+msgid "Movements"
+msgstr "الحركات"
+
+msgid "Low stock warnings"
+msgstr "تحذيرات المخزون المنخفض"
+
+msgid "Warehouse"
+msgstr "المخزن"
+
+msgid "On hand"
+msgstr "المتوفر"
+
+msgid "Available"
+msgstr "المتاح"
+
+msgid "Reorder point"
+msgstr "حد إعادة الطلب"
+
+msgid "Stock levels"
+msgstr "مستويات المخزون"
+
+msgid "Reserved"
+msgstr "المحجوز"
+
+msgid "Stock movements"
+msgstr "حركات المخزون"
+
+msgid "Type"
+msgstr "النوع"
+
+msgid "Quantity"
+msgstr "الكمية"
+
+msgid "Balance"
+msgstr "الرصيد"
+
+msgid "Reference"
+msgstr "المرجع"
+
+msgid "Sign in"
+msgstr "تسجيل الدخول"
+
+msgid "Factory Follow-up"
+msgstr "متابعة المصنع"
+
+msgid "Production, quality, downtime and inventory in one place"
+msgstr "الإنتاج والجودة والتوقف والمخزون في مكان واحد"
+
+msgid "Wrong user name or password."
+msgstr "اسم المستخدم أو كلمة المرور غير صحيحة."
+
+msgid "User name"
+msgstr "اسم المستخدم"
+
+msgid "Password"
+msgstr "كلمة المرور"
+
+msgid "Overview"
+msgstr "نظرة عامة"
+
+msgid "Output vs target"
+msgstr "الإنتاج مقابل المستهدف"
+
+msgid "OEE breakdown"
+msgstr "تفصيل الكفاءة الإجمالية"
+
+msgid "Availability"
+msgstr "الجاهزية"
+
+msgid "Performance"
+msgstr "الإنتاجية"
+
+msgid "OEE"
+msgstr "الكفاءة الإجمالية للمعدات"
+
+msgid "Output by line"
+msgstr "الإنتاج حسب الخط"
+
+msgid "Active alerts"
+msgstr "التنبيهات النشطة"
+
+msgid "View all"
+msgstr "عرض الكل"
+
+msgid "No active alerts - everything is within limits."
+msgstr "لا توجد تنبيهات نشطة - كل شيء ضمن الحدود المسموحة."
+
+msgid "Output by shift"
+msgstr "الإنتاج حسب الوردية"
+
+msgid "Attainment"
+msgstr "نسبة التحقق"
+
+msgid "{{ from_date }} → {{ to_date }}"
+msgstr "{{ from_date }} ← {{ to_date }}"
+
+msgid "{{ produced }} / {{ target }} pcs"
+msgstr "{{ produced }} / {{ target }} قطعة"
+
+msgid "Production vs target"
+msgstr "الإنتاج مقابل المستهدف"
+
+msgid "Last 7 days"
+msgstr "آخر 7 أيام"
+
+msgid "Reason category"
+msgstr "فئة السبب"
+
+msgid "Reason code"
+msgstr "كود السبب"
+
+msgid "Save downtime"
+msgstr "حفظ التوقف"
+
+msgid "Hour"
+msgstr "الساعة"
+
+msgid "Good"
+msgstr "السليم"
+
+msgid "Notes"
+msgstr "ملاحظات"
+
+msgid "Save production"
+msgstr "حفظ الإنتاج"
+
+msgid "Checked at"
+msgstr "وقت الفحص"
+
+msgid "Passed"
+msgstr "المجتاز"
+
+msgid "Defected"
+msgstr "المعيب"
+
+msgid "Occurrences"
+msgstr "عدد التكرار"
+
+msgid "Defect type"
+msgstr "نوع العيب"
+
+msgid "Save quality check"
+msgstr "حفظ فحص الجودة"
+
+msgid "Item"
+msgstr "الصنف"
+
+msgid "Movement type"
+msgstr "نوع الحركة"
+
+msgid "Save movement"
+msgstr "حفظ الحركة"
+
+msgid "From"
+msgstr "من"
+
+msgid "To"
+msgstr "إلى"
+
+msgid "Apply"
+msgstr "تطبيق"
+
+msgid "Reset"
+msgstr "إعادة تعيين"
+
+msgid "Today output"
+msgstr "إنتاج اليوم"
+
+msgid "Defect rate"
+msgstr "نسبة العيوب"
+
+msgid "Close"
+msgstr "إغلاق"
+
+msgid "records"
+msgstr "سجل"
+
+msgid "defective"
+msgstr "معيب"
+
+msgid "Good pieces"
+msgstr "القطع السليمة"
+
+msgid "of production"
+msgstr "من الإنتاج"
+
+msgid "Production trend"
+msgstr "اتجاه الإنتاج"
+
+msgid "Trend period"
+msgstr "الفترة الزمنية"
+
+msgid "Per line comparison"
+msgstr "مقارنة حسب الخط"
+
+msgid "Per shift comparison"
+msgstr "مقارنة حسب الوردية"
+
+msgid "Per product"
+msgstr "حسب المنتج"
+
+msgid "Latest production records"
+msgstr "أحدث سجلات الإنتاج"
+
+msgid "Pass rate"
+msgstr "نسبة المجتاز"
+
+msgid "Checks"
+msgstr "الفحوصات"
+
+msgid "occurrences"
+msgstr "تكرار"
+
+msgid "Checked units"
+msgstr "الوحدات المفحوصة"
+
+msgid "in the selected window"
+msgstr "داخل الفترة المختارة"
+
+msgid "Defect rate by product"
+msgstr "نسبة العيوب حسب المنتج"
+
+msgid "Defect rate by line"
+msgstr "نسبة العيوب حسب الخط"
+
+msgid "Defect types"
+msgstr "أنواع العيوب"
+
+msgid "Defect type breakdown"
+msgstr "تفصيل أنواع العيوب"
+
+msgid "Defective"
+msgstr "المعيب"
+
+msgid "Latest quality checks"
+msgstr "أحدث فحوصات الجودة"
+
+msgid "Rate"
+msgstr "النسبة"
+
+msgid "Reports"
+msgstr "التقارير"
+
+msgid ""
+"The export contains every record that matches the filters above - "
+"production, downtime, quality, inventory and stock movements."
+msgstr ""
+"الملف المُصدَّر يحتوي كل السجلات المطابقة للفلاتر أعلاه - الإنتاج والتوقف "
+"والجودة والمخزون وحركات المخزون."
+
+msgid "Download Excel"
+msgstr "تحميل Excel"
+
+msgid "Download PDF"
+msgstr "تحميل PDF"
+
+msgid "events"
+msgstr "حدث"
+
+msgid "Output per line"
+msgstr "الإنتاج لكل خط"
+
+msgid "Downtime summary"
+msgstr "ملخص التوقف"
+
+msgid "Preview - production records"
+msgstr "معاينة - سجلات الإنتاج"
+
+msgid "Thresholds"
+msgstr "الحدود"
+
+msgid "Alert thresholds"
+msgstr "حدود التنبيهات"
+
+msgid ""
+"When a KPI crosses one of these limits, an alert is raised and emailed."
+msgstr ""
+"عند تجاوز أي مؤشر لأحد هذه الحدود يتم إصدار تنبيه وإرساله بالبريد "
+"الإلكتروني."
+
+msgid "Active rules"
+msgstr "القواعد المفعّلة"
+
+msgid "Rule"
+msgstr "القاعدة"
+
+msgid "Condition"
+msgstr "الشرط"
+
+msgid "Active"
+msgstr "مفعّل"
+
+msgid "Yes"
+msgstr "نعم"
+
+msgid "No"
+msgstr "لا"
+
+msgid "No thresholds defined yet."
+msgstr "لم يتم تعريف أي حد بعد."
+
+msgid "New threshold"
+msgstr "حد جديد"
+
+msgid "Create threshold"
+msgstr "إضافة حد"
+
+msgid "Delete this rule?"
+msgstr "حذف هذه القاعدة؟"
+
+msgid "You have been signed out."
+msgstr "تم تسجيل خروجك."
+
+msgid "Hourly"
+msgstr "ساعة"
+
+msgid "Daily"
+msgstr "يوم"
+
+msgid "Weekly"
+msgstr "أسبوع"
+
+msgid "Production record saved (%(qty)s pcs)."
+msgstr "تم حفظ سجل الإنتاج (%(qty)s قطعة)."
+
+msgid "Downtime event saved (%(minutes)s min)."
+msgstr "تم حفظ حدث التوقف (%(minutes)s دقيقة)."
+
+msgid "Quality check saved (%(rate)s%% defect rate)."
+msgstr "تم حفظ فحص الجودة (نسبة عيوب %(rate)s%%)."
+
+msgid "Stock movement saved."
+msgstr "تم حفظ حركة المخزون."
+
+msgid "Missing required column(s): %(cols)s"
+msgstr "أعمدة مطلوبة مفقودة: %(cols)s"
+
+msgid "Import finished."
+msgstr "انتهى الاستيراد."
+
+msgid "Alert acknowledged."
+msgstr "تم الإقرار بالتنبيه."
+
+msgid "Alert resolved."
+msgstr "تم إغلاق التنبيه."
+
+msgid "Threshold created."
+msgstr "تم إنشاء الحد."
+
+msgid "Threshold deleted."
+msgstr "تم حذف الحد."
+
+msgid "%(count)s alert(s) raised."
+msgstr "تم إصدار %(count)s تنبيه."
+
+msgid "Administration"
+msgstr "الإدارة"
+
+msgid "Language"
+msgstr "اللغة"
+
+msgid "Sign out"
+msgstr "تسجيل الخروج"
+
+msgid "text"
+msgstr "نص"
+
+msgid "pcs"
+msgstr "قطعة"
+
+msgid "Target %(target)s pcs"
+msgstr "المستهدف %(target)s قطعة"
+
+msgid "A %(a)s%% / P %(p)s%% / Q %(q)s%%"
+msgstr "الجاهزية %(a)s%% / الإنتاجية %(p)s%% / الجودة %(q)s%%"
+
+msgid "h"
+msgstr "س"
+
+msgid "%(events)s events - %(ongoing)s ongoing"
+msgstr "%(events)s حدث - %(ongoing)s مستمر"
+
+msgid "%(defected)s defective of %(checked)s checked"
+msgstr "%(defected)s معيب من %(checked)s مفحوص"
+
+msgid "Needs attention"
+msgstr "يحتاج إلى انتباه"
+
+msgid "All factories"
+msgstr "كل المصانع"
+
+msgid "All lines"
+msgstr "كل الخطوط"
+
+msgid "All shifts"
+msgstr "كل الورديات"
+
+msgid "All products"
+msgstr "كل المنتجات"

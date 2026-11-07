@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% load i18n dashboard_extras %}
+
+{% block title %}{% trans "Production" %} · {{ APP_NAME }}{% endblock %}
+{% block page_title %}{% trans "Production" %}{% endblock %}
+
+{% block content %}
+  {% include "dashboard/partials/_filter_bar.html" %}
+
+  <div class="row g-3 mb-3">
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card kpi-primary">
+        <div class="kpi-label">{% trans "Produced" %}</div>
+        <div class="kpi-value">{{ summary.produced }}<span class="kpi-unit">pcs</span></div>
+        <div class="kpi-sub">{% trans "Target" %}: {{ summary.target }}</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card kpi-success">
+        <div class="kpi-label">{% trans "Attainment" %}</div>
+        <div class="kpi-value">{{ summary.attainment }}<span class="kpi-unit">%</span></div>
+        <div class="kpi-sub">{{ summary.records }} {% trans "records" %}</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card kpi-danger">
+        <div class="kpi-label">{% trans "Defect rate" %}</div>
+        <div class="kpi-value">{{ summary.defect_rate }}<span class="kpi-unit">%</span></div>
+        <div class="kpi-sub">{{ summary.defect }} {% trans "defective" %}</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card kpi-info">
+        <div class="kpi-label">{% trans "Good pieces" %}</div>
+        <div class="kpi-value">{{ summary.good }}</div>
+        <div class="kpi-sub">{{ summary.good_rate }}% {% trans "of production" %}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <h2 class="h6 mb-0">{% trans "Production trend" %}</h2>
+      <div class="btn-group btn-group-sm" role="group" aria-label="{% trans 'Trend period' %}">
+        {% for key, label in trend_options %}
+          <a class="btn btn-outline-secondary {% if trend == key %}active{% endif %}"
+             href="?{% if filter_query %}{{ filter_query }}&{% endif %}trend={{ key }}">{{ label }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="card-body chart-wrap">
+      <canvas id="trendChart" height="120"></canvas>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Per line comparison" %}</h2></div>
+        <div class="card-body chart-wrap">
+          <canvas id="lineCompareChart" height="110"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header"><h2 class="h6 mb-0">{% trans "Per shift comparison" %}</h2></div>
+        <div class="card-body chart-wrap">
+          <canvas id="shiftCompareChart" height="110"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header"><h2 class="h6 mb-0">{% trans "Per product" %}</h2></div>
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>{% trans "Product" %}</th>
+            <th class="text-end">{% trans "Produced" %}</th>
+            <th class="text-end">{% trans "Target" %}</th>
+            <th class="text-end">{% trans "Attainment" %}</th>
+            <th class="text-end">{% trans "Defect rate" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in by_product %}
+            <tr>
+              <td><strong>{{ row.code }}</strong> {{ row.product }}</td>
+              <td class="text-end">{{ row.produced }}</td>
+              <td class="text-end">{{ row.target }}</td>
+              <td class="text-end">{{ row.attainment }}%</td>
+              <td class="text-end">{{ row.defect_rate }}%</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="5" class="text-center text-muted py-4">{% trans "No data" %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2 class="h6 mb-0">{% trans "Latest production records" %}</h2></div>
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>{% trans "Date" %}</th>
+            <th>{% trans "Hour" %}</th>
+            <th>{% trans "Line" %}</th>
+            <th>{% trans "Shift" %}</th>
+            <th>{% trans "Product" %}</th>
+            <th class="text-end">{% trans "Produced" %}</th>
+            <th class="text-end">{% trans "Good" %}</th>
+            <th class="text-end">{% trans "Defect" %}</th>
+            <th class="text-end">{% trans "Target" %}</th>
+            <th>{% trans "Source" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in records %}
+            <tr>
+              <td class="text-nowrap">{{ row.date|date:"d/m/Y" }}</td>
+              <td>{{ row.hour }}:00</td>
+              <td>{{ row.production_line.name }}</td>
+              <td>{{ row.shift.name }}</td>
+              <td>{{ row.product.code }}</td>
+              <td class="text-end">{{ row.qty_produced }}</td>
+              <td class="text-end">{{ row.qty_good }}</td>
+              <td class="text-end text-danger">{{ row.qty_defect }}</td>
+              <td class="text-end">{{ row.target_qty }}</td>
+              <td><span class="badge bg-light text-dark border">{{ row.get_source_display }}</span></td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="10" class="text-center text-muted py-4">{% trans "No data" %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  {{ hourly|json_script:"hourly-data" }}
+  {{ daily|json_script:"daily-data" }}
+  {{ weekly|json_script:"weekly-data" }}
+  {{ by_line|json_script:"by-line-data" }}
+  {{ by_shift|json_script:"by-shift-data" }}
+  <script>
+    (function () {
+      const trend = "{{ trend|default:'daily' }}";
+      const sets = {
+        hourly: ["hourly-data", "hour"],
+        daily: ["daily-data", "date"],
+        weekly: ["weekly-data", "week"]
+      };
+      const pick = sets[trend] || sets.daily;
+      DashboardCharts.line("trendChart", pick[0], {
+        xKey: pick[1],
+        series: [
+          { key: "produced", label: "{% trans 'Produced' %}", color: "#1f77b4" },
+          { key: "target", label: "{% trans 'Target' %}", color: "#adb5bd" }
+        ]
+      });
+      DashboardCharts.bar("lineCompareChart", "by-line-data", {
+        xKey: "line", yKey: "produced", label: "{% trans 'Produced' %}"
+      });
+      DashboardCharts.bar("shiftCompareChart", "by-shift-data", {
+        xKey: "shift", yKey: "produced", label: "{% trans 'Produced' %}"
+      });
+    })();
+  </script>
+{% endblock %}

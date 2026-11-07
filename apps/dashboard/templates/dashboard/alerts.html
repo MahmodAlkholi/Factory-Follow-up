@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load i18n dashboard_extras %}
+
+{% block title %}{% trans "Alerts" %} · {{ APP_NAME }}{% endblock %}
+{% block page_title %}{% trans "Alerts" %}{% endblock %}
+
+{% block topbar_actions %}
+  {% if can_manage %}
+    <form method="post" action="{% url 'dashboard:threshold-run' %}" class="d-inline">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{% url 'dashboard:alerts' %}">
+      <button class="btn btn-sm btn-outline-primary" type="submit">{% trans "Run check now" %}</button>
+    </form>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <ul class="nav nav-pills nav-sm">
+        <li class="nav-item">
+          <a class="nav-link {% if status_filter == 'open' %}active{% endif %}"
+             href="?status=open">{% trans "Open" %} ({{ open_count }})</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if status_filter == 'acknowledged' %}active{% endif %}"
+             href="?status=acknowledged">{% trans "Acknowledged" %}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if status_filter == 'resolved' %}active{% endif %}"
+             href="?status=resolved">{% trans "Resolved" %}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if status_filter == 'all' %}active{% endif %}"
+             href="?status=all">{% trans "All" %}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>{% trans "Severity" %}</th>
+            <th>{% trans "Message" %}</th>
+            <th>{% trans "Scope" %}</th>
+            <th>{% trans "Raised" %}</th>
+            <th>{% trans "Status" %}</th>
+            <th class="text-end">{% trans "Actions" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for alert in alerts %}
+            <tr>
+              <td><span class="badge {{ alert.severity|severity_class }}">{{ alert.get_severity_display }}</span></td>
+              <td>{{ alert.message }}</td>
+              <td class="small text-muted">
+                {% if alert.production_line %}{{ alert.production_line.name }}{% elif alert.factory %}{{ alert.factory.name }}{% elif alert.machine %}{{ alert.machine.name }}{% else %}-{% endif %}
+              </td>
+              <td class="text-nowrap small">{{ alert.created_at|date:"d/m/Y H:i" }}</td>
+              <td><span class="badge {{ alert.status|severity_class }}">{{ alert.get_status_display }}</span></td>
+              <td class="text-end text-nowrap">
+                {% if alert.status == 'open' %}
+                  <form method="post" action="{% url 'dashboard:alert-action' alert.pk %}" class="d-inline">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="ack">
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button class="btn btn-sm btn-outline-warning" type="submit">{% trans "Acknowledge" %}</button>
+                  </form>
+                {% endif %}
+                {% if alert.status != 'resolved' %}
+                  <form method="post" action="{% url 'dashboard:alert-action' alert.pk %}" class="d-inline">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="resolve">
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button class="btn btn-sm btn-outline-success" type="submit">{% trans "Resolve" %}</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="6" class="text-center text-muted py-4">{% trans "No alerts for this filter." %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

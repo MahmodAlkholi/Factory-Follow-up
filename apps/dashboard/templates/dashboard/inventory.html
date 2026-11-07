@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load i18n dashboard_extras %}
+
+{% block title %}{% trans "Inventory" %} · {{ APP_NAME }}{% endblock %}
+{% block page_title %}{% trans "Inventory" %}{% endblock %}
+
+{% block content %}
+  {% include "dashboard/partials/_filter_bar.html" %}
+
+  <div class="row g-3 mb-3">
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card kpi-primary">
+        <div class="kpi-label">{% trans "Stock items" %}</div>
+        <div class="kpi-value">{{ summary.items }}</div>
+        <div class="kpi-sub">{{ summary.total_qty }} {% trans "units" %}</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card kpi-info">
+        <div class="kpi-label">{% trans "Stock value" %}</div>
+        <div class="kpi-value">{{ summary.total_value }}</div>
+        <div class="kpi-sub">{% trans "at current unit cost" %}</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card kpi-warning">
+        <div class="kpi-label">{% trans "Low stock" %}</div>
+        <div class="kpi-value">{{ summary.low_stock }}</div>
+        <div class="kpi-sub">{% trans "at or below reorder point" %}</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="kpi-card kpi-success">
+        <div class="kpi-label">{% trans "Movements" %}</div>
+        <div class="kpi-value">{{ summary.movements }}</div>
+        <div class="kpi-sub">+{{ summary.qty_in }} / -{{ summary.qty_out }}</div>
+      </div>
+    </div>
+  </div>
+
+  {% if summary.low_stock %}
+    <div class="card mb-3 border-warning">
+      <div class="card-header bg-warning-subtle">
+        <h2 class="h6 mb-0">⚠ {% trans "Low stock warnings" %}</h2>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th>{% trans "Product" %}</th>
+              <th>{% trans "Warehouse" %}</th>
+              <th class="text-end">{% trans "On hand" %}</th>
+              <th class="text-end">{% trans "Available" %}</th>
+              <th class="text-end">{% trans "Reorder point" %}</th>
+              <th>{% trans "Status" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in summary.low_stock_items %}
+              <tr>
+                <td><strong>{{ item.product.code }}</strong> {{ item.product.name }}</td>
+                <td>{{ item.warehouse_code }}</td>
+                <td class="text-end">{{ item.qty_on_hand }}</td>
+                <td class="text-end">{{ item.available_qty }}</td>
+                <td class="text-end">{{ item.reorder_point }}</td>
+                <td><span class="badge {{ item.stock_status|status_class }}">{{ item.stock_status_display }}</span></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="card mb-3">
+    <div class="card-header"><h2 class="h6 mb-0">{% trans "Stock levels" %}</h2></div>
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>{% trans "Product" %}</th>
+            <th>{% trans "Warehouse" %}</th>
+            <th class="text-end">{% trans "On hand" %}</th>
+            <th class="text-end">{% trans "Reserved" %}</th>
+            <th class="text-end">{% trans "Available" %}</th>
+            <th class="text-end">{% trans "Reorder point" %}</th>
+            <th>{% trans "Status" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+            <tr>
+              <td><strong>{{ item.product.code }}</strong> {{ item.product.name }}</td>
+              <td>{{ item.warehouse_code }}</td>
+              <td class="text-end">{{ item.qty_on_hand }}</td>
+              <td class="text-end">{{ item.qty_reserved }}</td>
+              <td class="text-end">{{ item.available_qty }}</td>
+              <td class="text-end">{{ item.reorder_point }}</td>
+              <td><span class="badge {{ item.stock_status|status_class }}">{{ item.stock_status_display }}</span></td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="7" class="text-center text-muted py-4">{% trans "No data" %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2 class="h6 mb-0">{% trans "Stock movements" %}</h2></div>
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>{% trans "Date" %}</th>
+            <th>{% trans "Product" %}</th>
+            <th>{% trans "Warehouse" %}</th>
+            <th>{% trans "Type" %}</th>
+            <th class="text-end">{% trans "Quantity" %}</th>
+            <th class="text-end">{% trans "Balance" %}</th>
+            <th>{% trans "Reference" %}</th>
+            <th>{% trans "Reason" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in movements %}
+            <tr>
+              <td class="text-nowrap">{{ row.moved_at|date:"d/m/Y H:i" }}</td>
+              <td>{{ row.inventory_item.product.code }}</td>
+              <td>{{ row.inventory_item.warehouse_code }}</td>
+              <td><span class="badge bg-light text-dark border">{{ row.get_movement_type_display }}</span></td>
+              <td class="text-end">{{ row.quantity }}</td>
+              <td class="text-end">{{ row.balance_after }}</td>
+              <td class="small">{{ row.reference_no }}</td>
+              <td class="small text-muted">{{ row.reason }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="8" class="text-center text-muted py-4">{% trans "No data" %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
