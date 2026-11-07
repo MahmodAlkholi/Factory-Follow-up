@@ -56,3 +56,25 @@ class IsTokenAuthenticated(permissions.BasePermission):
             and request.auth
             and isinstance(request.auth, Token)
         )
+
+
+class IsAdminToken(permissions.BasePermission):
+    """
+    A token that belongs to an Admin.
+
+    Used by the endpoints that a scheduled job calls on a platform without a
+    Celery beat (Cloud Run and friends): the job authenticates with an API
+    token, and only an Admin token may trigger the alert engine.
+    """
+
+    def has_permission(self, request, view):
+        from rest_framework.authtoken.models import Token
+
+        if not (
+            request.user
+            and request.user.is_authenticated
+            and request.auth
+            and isinstance(request.auth, Token)
+        ):
+            return False
+        return is_admin(request.user)

@@ -22,6 +22,13 @@ router.register("thresholds", views.ThresholdViewSet, basename="threshold")
 router.register("alerts", views.AlertViewSet, basename="alert")
 
 urlpatterns = [
+    # The explicit paths come first: the router would otherwise read
+    # "thresholds/evaluate/" as a detail route with the pk "evaluate".
+    path(
+        "v1/thresholds/evaluate/",
+        views.evaluate_thresholds,
+        name="thresholds-evaluate",
+    ),
     path("v1/", include(router.urls)),
     path("v1/health/", views.health, name="health"),
     path("v1/me/", views.current_user, name="current-user"),

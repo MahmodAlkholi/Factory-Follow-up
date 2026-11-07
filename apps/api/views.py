@@ -42,7 +42,12 @@ from apps.core.services import kpi
 from apps.core.services.filters import FilterParams
 
 from . import serializers
-from .permissions import CanEnterData, IsAdminOrReadOnly, IsTokenAuthenticated
+from .permissions import (
+    CanEnterData,
+    IsAdminOrReadOnly,
+    IsAdminToken,
+    IsTokenAuthenticated,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -472,6 +477,41 @@ class StockMovementIngestViewSet(IngestViewSet):
 def health(request):
     """Liveness probe used by docker / nginx."""
     return Response({"status": "ok", "time": timezone.now()})
+
+
+@api_view(["POST"])
+@permission_classes([IsAdminToken])
+def evaluate_thresholds(request):
+    """
+    Run the alert engine once.
+
+    This is the endpoint a *scheduled job* calls on a platform that cannot
+    keep a Celery beat alive next to the web container (Cloud Run, a cron
+    entry, a Windows task).  It needs an API token that belongs to an Admin,
+    so give the scheduler its own named token::
+
+        python manage.py create_api_token --username admin --name "scheduler"
+
+    The answer mirrors the management command: the alerts that were raised.
+    """
+    from apps.core.services.alerts import evaluate_thresholds as run_engine
+
+    created = run_engine(send_email=not request.data.get("no_email", False))
+    return Response(
+        {
+            "raised": len(created),
+            "alerts": [
+                {
+                    "id": alert.pk,
+                    "severity": alert.get_severity_display(),
+                    "message": alert.message,
+                    "metric": alert.metric,
+                    "value": alert.value,
+                }
+                for alert in created
+            ],
+        }
+    )
 
 
 @api_view(["GET"])

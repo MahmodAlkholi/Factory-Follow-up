@@ -117,6 +117,12 @@ $web = Start-Process -FilePath "python" `
 
 Start-Sleep -Seconds 3
 
+# --- 3. point the README at the link that is live now --------------------
+$updater = Join-Path $PSScriptRoot "update_readme_url.ps1"
+if (Test-Path $updater) {
+    & powershell -ExecutionPolicy Bypass -File $updater -Url $publicUrl
+}
+
 @{ WebPid = $web.Id; TunnelPid = $tunnel.Id; Url = $publicUrl; Port = $Port } |
     ConvertTo-Json | Set-Content -Path $StateFile -Encoding UTF8
 

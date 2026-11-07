@@ -190,3 +190,51 @@ def test_current_user_endpoint_reports_the_scope(supervisor_user):
     body = response.json()
     assert body["scope"]["line"] == supervisor_user.profile.production_line_id
     assert "Supervisor" in body["roles"]
+
+
+# ---------------------------------------------------------------------------
+# Scheduled alert evaluation
+# ---------------------------------------------------------------------------
+def test_evaluate_thresholds_needs_a_token():
+    from rest_framework.test import APIClient
+
+    response = APIClient().post(reverse("api:thresholds-evaluate"))
+    assert response.status_code == 401
+
+
+def test_evaluate_thresholds_rejects_an_operator_token(api_token):
+    """The api_token fixture belongs to an operator - not enough."""
+    from rest_framework.test import APIClient
+
+    client = APIClient()
+    client.credentials(HTTP_AUTHORIZATION="Token " + api_token.key)
+    response = client.post(reverse("api:thresholds-evaluate"))
+    assert response.status_code == 403
+
+
+def test_evaluate_thresholds_with_an_admin_token(admin_user):
+    from apps.core.models import ApiToken
+    from rest_framework.test import APIClient
+
+    token = ApiToken.objects.create(user=admin_user, name="scheduler")
+    client = APIClient()
+    client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+    response = client.post(reverse("api:thresholds-evaluate"))
+    assert response.status_code == 200
+    body = response.json()
+    assert "raised" in body and "alerts" in body
+
+
+def test_evaluate_thresholds_can_skip_the_email(admin_user):
+    from apps.core.models import ApiToken
+    from rest_framework.test import APIClient
+
+    token = ApiToken.objects.create(user=admin_user, name="scheduler")
+    client = APIClient()
+    client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+    response = client.post(
+        reverse("api:thresholds-evaluate"),
+        data=json.dumps({"no_email": True}),
+        content_type="application/json",
+    )
+    assert response.status_code == 200

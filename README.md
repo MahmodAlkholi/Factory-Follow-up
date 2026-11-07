@@ -29,10 +29,11 @@ layout and works on a shop-floor tablet.
 | `static/` | CSS, JS and the vendored Bootstrap / Chart.js / HTMX |
 | `locale/` | Arabic translation catalogue (`.po` + compiled `.mo`) |
 | `assets/fonts/` | DejaVuSans + Noto Naskh Arabic (for the PDF export) |
-| `tests/` | pytest suite (96 tests) |
+| `tests/` | pytest suite (100 tests) |
 | `deploy/` | gunicorn + nginx configuration |
 | `tools/i18n.py` | Portable `extract` / `compile` for the translation catalogue |
 | `tools/share_demo.ps1` | Start/stop a public Cloudflare Quick Tunnel for the running demo |
+| `tools/update_readme_url.ps1` | Point the README at the demo link that is live now |
 | `tools/check_share.py` | Verify that a shared URL serves the dashboard (login included) |
 | `tools/vendor_clean.py` | Strip the broken `sourceMappingURL` references from the vendored assets |
 
@@ -259,6 +260,7 @@ Base URL `/api/v1/`. Authentication: **token** (`Authorization: Token <key>`),
 | `/api/v1/me/` | GET | current user, roles and scope |
 | `/api/v1/dashboard/summary/` | GET | the KPI cards + OEE + inventory as JSON |
 | `/api/v1/health/` | GET | liveness probe (no auth) |
+| `/api/v1/thresholds/evaluate/` | POST | runs the alert engine once (Admin API token) |
 
 Filter parameters accepted by the list endpoints and by
 `/api/v1/dashboard/summary/`:
@@ -306,6 +308,37 @@ Pagination: `?page=2&page_size=100` (max 1000).
   "filters": {"date_from": "2026-11-01", "date_to": "2026-11-07"}
 }
 ```
+
+**`POST /api/v1/thresholds/evaluate/`** runs the alert engine once and
+answers with the alerts it raised. It needs an API token that belongs to an
+**Admin**, so give the scheduler its own named token:
+
+```bash
+python manage.py create_api_token --username admin --name "scheduler"
+# -> 9f2c1ab4...
+```
+
+```bash
+curl -X POST https://your-app.run.app/api/v1/thresholds/evaluate/ \
+     -H "Authorization: Token 9f2c1ab4..." \
+     -H "Content-Type: application/json" \
+     -d '{"no_email": true}'
+```
+
+```json
+{
+  "raised": 1,
+  "alerts": [
+    {"id": 7, "severity": "Critical",
+     "message": "All: Line stopped (minutes) is 115 > 15.00",
+     "metric": "line_stopped_minutes", "value": 115}
+  ]
+}
+```
+
+That is what a scheduled job calls on a platform that cannot keep a Celery
+beat alive next to the web container (see §12.5). The same thing can be run
+from a shell with `python manage.py evaluate_thresholds`.
 
 The chart series are also available as plain JSON for a separate frontend:
 
@@ -365,7 +398,7 @@ python tools/i18n.py stats       # what is still untranslated
 ## 11. Tests
 
 ```bash
-python -m pytest              # 96 tests
+python -m pytest              # 100 tests
 python -m pytest tests/test_api.py -v
 ```
 
@@ -494,6 +527,20 @@ The script prints a public URL such as
 `https://virtual-charger-soviet-traditions.trycloudflare.com`. Anybody with
 that link can sign in with `admin` / `factory123`. The address is random and
 temporary - it changes on every run of the script.
+
+The script also rewrites the **Live demo** line at the top of this README so
+the repository always points at the link that is actually running. It edits
+the file only - committing and pushing stays your decision:
+
+```bash
+git add README.md && git commit -m "update the live demo link" && git push
+```
+
+To point the README at a link by hand:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/update_readme_url.ps1 -Url https://abc.trycloudflare.com
+```
 
 Stop it again with:
 
